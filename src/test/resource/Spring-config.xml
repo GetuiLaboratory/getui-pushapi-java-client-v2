@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="gtApiConfiguration" class="com.getui.push.v2.sdk.GtApiConfiguration" init-method="check">
+        <property name="appId" value="xxx"/>
+        <property name="appKey" value="xxx"/>
+        <property name="masterSecret" value="xxx"/>
+        <property name="domain" value="xxx"/>
+    </bean>
+
+    <!--用户API-->
+    <bean id="userApi" class="com.getui.push.v2.sdk.spring.GtBeanFactory">
+        <constructor-arg index="0" ref="gtApiConfiguration"/>
+        <property name="apiClass" value="com.getui.push.v2.sdk.api.UserApi"/>
+    </bean>
+    <!--推送API-->
+    <bean id="pushApi" class="com.getui.push.v2.sdk.spring.GtBeanFactory">
+        <constructor-arg index="0" ref="gtApiConfiguration"/>
+        <property name="apiClass" value="com.getui.push.v2.sdk.api.PushApi"/>
+    </bean>
+
+</beans>
