@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.getui</groupId>
-    <artifactId>rasv2-java-sdk</artifactId>
+    <groupId>com.getui.push</groupId>
+    <artifactId>restful-sdk</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0.0</version>
     <url>https://github.com/GetuiLaboratory/getui-pushapi-java-client-v2</url>
@@ -19,6 +19,21 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>getui</name>
+            <email>developer@getui.com</email>
+            <organization>getui</organization>
+            <organizationUrl>https://www.getui.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/GetuiLaboratory/getui-pushapi-java-client-v2.git</connection>
+        <developerConnection>scm:git:ssh://github.com:GetuiLaboratory/getui-pushapi-java-client-v2.git</developerConnection>
+        <url>https://github.com/GetuiLaboratory/getui-pushapi-java-client-v2</url>
+    </scm>
 
     <properties>
         <spring.version>4.3.9.RELEASE</spring.version>
