@@ -57,7 +57,7 @@ public interface UserApi {
      * @return
      */
     @GtDelete(uri = "/user/alias")
-    ApiResult<QueryCidResDTO> batchUnbindAlias(@GtBodyParam CidAliasListDTO cidAliasListDTO);
+    ApiResult<Void> batchUnbindAlias(@GtBodyParam CidAliasListDTO cidAliasListDTO);
 
     /**
      * 解绑所有别名
@@ -66,7 +66,7 @@ public interface UserApi {
      * @return
      */
     @GtDelete(uri = "/user/alias")
-    ApiResult<QueryCidResDTO> unbindAllAlias(@GtPathParam String alias);
+    ApiResult<Void> unbindAllAlias(@GtPathParam String alias);
 
     /**
      * 一个用户绑定一批标签
@@ -151,6 +151,6 @@ public interface UserApi {
      * @return
      */
     @GtPost(uri = "/user/count/")
-    ApiResult<Void> queryUser(@GtBodyParam ConditionListDTO conditionListDTO);
+    ApiResult<Map<String, Integer>> queryUser(@GtBodyParam ConditionListDTO conditionListDTO);
 
 }

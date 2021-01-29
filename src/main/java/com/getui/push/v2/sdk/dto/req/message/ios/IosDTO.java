@@ -34,6 +34,12 @@ public class IosDTO {
      */
     private List<Multimedia> multimedia;
 
+    /**
+     * 使用相同的apns-collapse-id可以覆盖之前的消息
+     */
+    @SerializedName("apns-collapse-id")
+    private String apnsCollapseId;
+
     public IosDTO addMultimedia(Multimedia multimedia) {
         if (multimedia == null) {
             return this;
@@ -85,6 +91,14 @@ public class IosDTO {
         this.multimedia = multimedia;
     }
 
+    public String getApnsCollapseId() {
+        return apnsCollapseId;
+    }
+
+    public void setApnsCollapseId(String apnsCollapseId) {
+        this.apnsCollapseId = apnsCollapseId;
+    }
+
     @Override
     public String toString() {
         return "IosDTO{" +
@@ -93,6 +107,7 @@ public class IosDTO {
                 ", autoBadge='" + autoBadge + '\'' +
                 ", payload='" + payload + '\'' +
                 ", multimedia=" + multimedia +
+                ", apnsCollapseId='" + apnsCollapseId + '\'' +
                 '}';
     }
 }
