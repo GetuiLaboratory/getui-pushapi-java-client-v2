@@ -105,13 +105,13 @@ public class UserApiTest {
     public void batchUnboundAlias() {
         CidAliasListDTO cidAliasListDTO = new CidAliasListDTO();
         cidAliasListDTO.add(new CidAliasListDTO.CidAlias(cid, "alias"));
-        ApiResult<QueryCidResDTO> apiResult = userApi.batchUnbindAlias(cidAliasListDTO);
+        ApiResult<Void> apiResult = userApi.batchUnbindAlias(cidAliasListDTO);
         System.out.println(apiResult);
     }
 
     @Test
     public void unboundAllAlias() {
-        ApiResult<QueryCidResDTO> apiResult = userApi.unbindAllAlias("alias");
+        ApiResult<Void> apiResult = userApi.unbindAllAlias("alias");
         System.out.println(apiResult);
     }
 

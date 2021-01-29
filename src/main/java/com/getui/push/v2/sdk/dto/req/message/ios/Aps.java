@@ -26,6 +26,12 @@ public class Aps {
      */
     private String category;
 
+    /**
+     * ios的远程通知通过该属性对通知进行分组，仅支持iOS 12.0以上版本
+     */
+    @SerializedName("thread-id")
+    private String threadId;
+
     public Alert getAlert() {
         return alert;
     }
@@ -58,6 +64,14 @@ public class Aps {
         this.category = category;
     }
 
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
+
     @Override
     public String toString() {
         return "Aps{" +
@@ -65,6 +79,7 @@ public class Aps {
                 ", contentAvailable=" + contentAvailable +
                 ", sound='" + sound + '\'' +
                 ", category='" + category + '\'' +
+                ", threadId='" + threadId + '\'' +
                 '}';
     }
 }

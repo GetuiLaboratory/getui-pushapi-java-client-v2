@@ -15,14 +15,14 @@
 
 
 ## 安装依赖
-### 通过[Maven](https://mvnrepository.com/)来管理项目依赖
+### 通过[Maven](https://mvnrepository.com/artifact/com.getui.push/restful-sdk)来管理项目依赖
 推荐通过Maven来管理项目依赖，您只需在项目的`pom.xml`文件中声明如下依赖
 
 ```xml
     <dependency>
         <groupId>com.getui.push</groupId>
         <artifactId>restful-sdk</artifactId>
-        <version>1.0.0.0</version>
+        <version>you can find the version number in Maven</version>
     </dependency>
 ```
 
@@ -52,7 +52,6 @@ public class TestCreatApi {
         PushApi pushApi = apiHelper.creatApi(PushApi.class);
         }
     }
-}
 ```
 
 ##### 使用示例：**推送API**_根据cid进行单推
