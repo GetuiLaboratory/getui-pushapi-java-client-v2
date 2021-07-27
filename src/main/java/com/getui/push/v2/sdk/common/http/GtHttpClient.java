@@ -54,7 +54,7 @@ public class GtHttpClient {
                 .setSocketTimeout(soTimeout)
                 .setMaxRedirects(0)
                 .build();
-        builder.setDefaultRequestConfig(config);
+        builder.setDefaultRequestConfig(config).useSystemProperties();
         this.httpclient = builder.build();
     }
 
