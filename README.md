@@ -39,6 +39,8 @@
 ```java
 public class TestCreatApi {
     public void test() {
+        // 设置httpClient最大连接数，当并发较大时建议调大此参数。或者启动参数加上 -Dhttp.maxConnections=200
+        System.setProperty("http.maxConnections", "200");
         GtApiConfiguration apiConfiguration = new GtApiConfiguration();
         //填写应用配置
         apiConfiguration.setAppId("xxx");
