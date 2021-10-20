@@ -19,9 +19,10 @@ public class HttpManager {
      * @param connectionTimeOut 连接超时时间
      * @param readTimeout       读超时时间
      * @param maxHttpTryTime    失败最大尝试次数
+     * @param trustSSL
      */
-    public HttpManager(int connectionTimeOut, int readTimeout, int maxHttpTryTime, GtHttpProxyConfig proxyConfig) {
-        this.client = new GtHttpClient(connectionTimeOut, readTimeout, maxHttpTryTime, proxyConfig);
+    public HttpManager(int connectionTimeOut, int readTimeout, int maxHttpTryTime, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
+        this.client = new GtHttpClient(connectionTimeOut, readTimeout, maxHttpTryTime, proxyConfig, trustSSL);
     }
 
     public String syncHttps(String url, String method, Map<String, Object> headers, String body, String contentType) {

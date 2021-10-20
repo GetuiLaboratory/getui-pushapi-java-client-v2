@@ -5,10 +5,10 @@ import com.getui.push.v2.sdk.anno.method.GtGet;
 import com.getui.push.v2.sdk.anno.method.GtPost;
 import com.getui.push.v2.sdk.anno.method.GtPut;
 import com.getui.push.v2.sdk.common.ApiException;
+import com.getui.push.v2.sdk.common.type.ParameterizedTypeImpl;
 import com.getui.push.v2.sdk.common.type.TypeReference;
 import com.getui.push.v2.sdk.common.util.Utils;
 import com.getui.push.v2.sdk.core.factory.GtApiProxyFactory;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

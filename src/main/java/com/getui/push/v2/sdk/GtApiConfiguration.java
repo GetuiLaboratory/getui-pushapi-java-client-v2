@@ -67,6 +67,11 @@ public class GtApiConfiguration {
     private int maxHttpTryTime = 1;
 
     /**
+     * http请求时是否需要信任https
+     */
+    private boolean trustSSL = false;
+
+    /**
      * http请求设置代理，默认不设置
      */
     private GtHttpProxyConfig proxyConfig;
@@ -84,6 +89,14 @@ public class GtApiConfiguration {
         Assert.notBlank(appKey, true);
         Assert.notBlank(masterSecret, true);
         Assert.notBlank(domain, true);
+    }
+
+    public boolean isTrustSSL() {
+        return trustSSL;
+    }
+
+    public void setTrustSSL(boolean trustSSL) {
+        this.trustSSL = trustSSL;
     }
 
     public String getAppId() {

@@ -21,16 +21,21 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 
 public class GtHttpClient {
     private int maxHttpTryTime;
     CloseableHttpClient httpclient;
 
-    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, GtHttpProxyConfig proxyConfig) {
+    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
         if (connectTimeout <= 0) {
             throw new IllegalArgumentException("connectTimeout must be > 0.");
         }
@@ -48,6 +53,10 @@ public class GtHttpClient {
                 builder.setDefaultCredentialsProvider(credsProvider);
             }
             builder.setProxy(new HttpHost(proxyConfig.getHost(), proxyConfig.getPort()));
+        }
+        // jvm1.6 如果不设置信任证书，会报错
+        if (System.getProperty("java.version").startsWith("1.6") || trustSSL) {
+            builder.setSSLContext(createSSLContext());
         }
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(connectTimeout)
@@ -81,6 +90,30 @@ public class GtHttpClient {
         return doRequest(request, 0);
     }
 
+    public static SSLContext createSSLContext() {
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSLv3");
+            X509TrustManager trustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            };
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
+            return sslContext;
+        } catch (Exception e) {
+            throw new ApiException("create httpClient error.", e);
+        }
+    }
+
     private String doRequest(HttpUriRequest request, int tryTimes) {
         CloseableHttpResponse response = null;
         int code = 5000;
@@ -95,8 +128,14 @@ public class GtHttpClient {
                 return EntityUtils.toString(response.getEntity());
             } else if (code == HttpURLConnection.HTTP_NOT_FOUND) {
                 throw new ApiException("not found.", code);
-            } else if (code == HttpURLConnection.HTTP_GATEWAY_TIMEOUT) {
-                throw new ApiException("timeout.", code);
+            }
+            // >=500 异常重试
+            else if (code >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                if (tryTimes > maxHttpTryTime) {
+                    throw new ApiException("http error", code);
+                } else {
+                    return doRequest(request, ++tryTimes);
+                }
             } else {
                 throw new ApiException("Http Response Error.", code);
             }
