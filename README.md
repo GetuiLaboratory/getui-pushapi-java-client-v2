@@ -22,7 +22,7 @@
     <dependency>
         <groupId>com.getui.push</groupId>
         <artifactId>restful-sdk</artifactId>
-        <version>1.0.0.1</version>
+        <version>1.0.0.3</version>
     </dependency>
 ```
 
@@ -52,8 +52,8 @@ public class TestCreatApi {
         ApiHelper apiHelper = ApiHelper.build(apiConfiguration);
         // 创建对象，建议复用。目前有PushApi、StatisticApi、UserApi
         PushApi pushApi = apiHelper.creatApi(PushApi.class);
-        }
     }
+}
 ```
 
 ##### 使用示例：**推送API**_根据cid进行单推

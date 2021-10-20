@@ -1,7 +1,6 @@
 package com.getui.push.v2.sdk.dto.req.message.ios;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -9,162 +8,137 @@ import java.util.List;
  *
  * @author getui
  */
-public class Alert {
+public class Alert extends HashMap<String, Object> {
     /**
      * 通知消息标题
      */
-    private String title;
+    private final String title = "title";
     /**
      * 通知消息内容
      */
-    private String body;
+    private final String body = "body";
     /**
      * (用于多语言支持)指定执行按钮所使用的Localizable.strings
      */
-    @SerializedName("action-loc-key")
-    private String actionLocKey;
+    private final String actionLocKey = "action-loc-key";
     /**
      * (用于多语言支持)指定Localizable.strings文件中相应的key
      */
-    @SerializedName("loc-key")
-    private String locKey;
+    private final String locKey = "loc-key";
     /**
      * 如果loc-key中使用了占位符，则在loc-args中指定各参数
      */
-    @SerializedName("loc-args")
-    private List<String> locArgs;
+    private final String locArgs = "loc-args";
     /**
      * 指定启动界面图片名
      */
-    @SerializedName("launch-image")
-    private String launchImage;
+    private final String launchImage = "launch-image";
     /**
      * (用于多语言支持）对于标题指定执行按钮所使用的Localizable.strings,仅支持iOS8.2以上版本
      */
-    @SerializedName("title-loc-key")
-    private String titleLocKey;
+    private final String titleLocKey = "title-loc-key";
     /**
      * 对于标题,如果loc-key中使用的占位符，则在loc-args中指定各参数,仅支持iOS8.2以上版本
      */
-    @SerializedName("title-loc-args")
-    private List<String> titleLocArgs;
+    private final String titleLocArgs = "title-loc-args";
     /**
      * 通知子标题,仅支持iOS8.2以上版本
      */
-    private String subtitle;
+    private final String subtitle = "subtitle";
     /**
      * 当前本地化文件中的子标题字符串的关键字,仅支持iOS8.2以上版本
      */
-    @SerializedName("subtitle-loc-key")
-    private String subtitleLocKey;
+    private final String subtitleLocKey = "subtitle-loc-key";
     /**
      * 当前本地化子标题内容中需要置换的变量参数 ,仅支持iOS8.2以上版本
      */
-    @SerializedName("subtitle-loc-args")
-    private List<String> subtitleLocArgs;
+    private final String subtitleLocArgs = "subtitle-loc-args";
 
     public String getTitle() {
-        return title;
+        return (String) super.get(this.title);
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        super.put(this.title, title);
     }
 
     public String getBody() {
-        return body;
+        return (String) super.get(this.body);
     }
 
     public void setBody(String body) {
-        this.body = body;
+        super.put(this.body, body);
     }
 
     public String getActionLocKey() {
-        return actionLocKey;
+        return (String) super.get(this.actionLocKey);
     }
 
     public void setActionLocKey(String actionLocKey) {
-        this.actionLocKey = actionLocKey;
+        super.put(this.actionLocKey, actionLocKey);
     }
 
     public String getLocKey() {
-        return locKey;
+        return (String) super.get(this.locKey);
     }
 
     public void setLocKey(String locKey) {
-        this.locKey = locKey;
+        super.put(this.locKey, locKey);
     }
 
     public List<String> getLocArgs() {
-        return locArgs;
+        return (List<String>) super.get(this.locArgs);
     }
 
     public void setLocArgs(List<String> locArgs) {
-        this.locArgs = locArgs;
+        super.put(this.locArgs, locArgs);
     }
 
     public String getLaunchImage() {
-        return launchImage;
+        return (String) super.get(this.launchImage);
     }
 
     public void setLaunchImage(String launchImage) {
-        this.launchImage = launchImage;
+        super.put(this.launchImage, launchImage);
     }
 
     public String getTitleLocKey() {
-        return titleLocKey;
+        return (String) super.get(this.titleLocKey);
     }
 
     public void setTitleLocKey(String titleLocKey) {
-        this.titleLocKey = titleLocKey;
+        super.put(this.titleLocKey, titleLocKey);
     }
 
     public List<String> getTitleLocArgs() {
-        return titleLocArgs;
+        return (List<String>) super.get(this.titleLocArgs);
     }
 
     public void setTitleLocArgs(List<String> titleLocArgs) {
-        this.titleLocArgs = titleLocArgs;
+        super.put(this.titleLocArgs, titleLocArgs);
     }
 
     public String getSubtitle() {
-        return subtitle;
+        return (String) super.get(this.subtitle);
     }
 
     public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+        super.put(this.subtitle, subtitle);
     }
 
     public String getSubtitleLocKey() {
-        return subtitleLocKey;
+        return (String) super.get(this.subtitleLocKey);
     }
 
     public void setSubtitleLocKey(String subtitleLocKey) {
-        this.subtitleLocKey = subtitleLocKey;
+        super.put(this.subtitleLocKey, subtitleLocKey);
     }
 
     public List<String> getSubtitleLocArgs() {
-        return subtitleLocArgs;
+        return (List<String>) super.get(this.subtitleLocArgs);
     }
 
     public void setSubtitleLocArgs(List<String> subtitleLocArgs) {
-        this.subtitleLocArgs = subtitleLocArgs;
-    }
-
-    @Override
-    public String toString() {
-        return "Alert{" +
-                "title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", actionLocKey='" + actionLocKey + '\'' +
-                ", locKey='" + locKey + '\'' +
-                ", locArgs=" + locArgs +
-                ", launchImage='" + launchImage + '\'' +
-                ", titleLocKey='" + titleLocKey + '\'' +
-                ", titleLocArgs=" + titleLocArgs +
-                ", subtitle='" + subtitle + '\'' +
-                ", subtitleLocKey='" + subtitleLocKey + '\'' +
-                ", subtitleLocArgs=" + subtitleLocArgs +
-                '}';
+        super.put(this.subtitleLocArgs, subtitleLocArgs);
     }
 }

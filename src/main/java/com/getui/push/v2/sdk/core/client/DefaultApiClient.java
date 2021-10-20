@@ -131,7 +131,7 @@ public class DefaultApiClient {
 
         this.httpManager = new HttpManager(apiConfiguration.getConnectTimeout(),
                 apiConfiguration.getSoTimeout(), apiConfiguration.getMaxHttpTryTime(),
-                apiConfiguration.getProxyConfig());
+                apiConfiguration.getProxyConfig(), apiConfiguration.isTrustSSL());
 
         this.hostManager = new HostManager(apiConfiguration, this.httpManager);
         // 分析最稳定域名
@@ -288,7 +288,11 @@ public class DefaultApiClient {
     private ApiResult<?> doExecute(GtApiProxyFactory.ApiParam apiParam, TokenDTO token) {
         Map<String, Object> header = new HashMap<String, Object>(4);
         if (apiParam.getNeedToken()) {
-            header.put("token", token.getToken());
+            if (token == null) {
+                header.put("token", refreshTokenAndGet(token));
+            } else {
+                header.put("token", token.getToken());
+            }
         }
         String body = null;
         if (apiParam.getBody() != null) {
@@ -308,16 +312,26 @@ public class DefaultApiClient {
         } finally {
             afterDoExecute(apiParam, header, body, result);
         }
+        if (result == null) {
+            throw new ApiException(String.format("请求失败，返回值为空。url:%s, body: %s.", fullUrl, body));
+        }
         try {
-            final ApiResult<?> apiResult = json.fromJson(result, apiParam.getReturnType());
+            ApiResult<?> apiResult = json.fromJson(result, apiParam.getReturnType());
             if (apiResult.getCode() == 301) {
                 // 兼容域名改变
-                return json.fromJson(result, ApiResult.class);
+                apiResult = json.fromJson(result, ApiResult.class);
+            }
+            if (apiResult == null) {
+                throw new ApiException(String.format("请求失败，解析返回值失败。url:%s, body: %s, result: %s.", fullUrl, body, result));
             }
             return apiResult;
         } catch (Exception e) {
             // 兼容域名改变
-            return json.fromJson(result, ApiResult.class);
+            ApiResult<?> apiResult = json.fromJson(result, ApiResult.class);
+            if (apiResult == null) {
+                throw new ApiException(String.format("请求失败，解析返回值失败。url:%s, body: %s, result: %s.", fullUrl, body, result));
+            }
+            return apiResult;
         }
     }
 
@@ -481,6 +495,7 @@ public class DefaultApiClient {
             refreshTokenAndGet(null);
         } catch (ApiException e) {
             log.error("refresh token failed.", e);
+            throw e;
         }
     }
 }
