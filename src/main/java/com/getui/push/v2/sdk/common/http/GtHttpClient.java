@@ -30,12 +30,13 @@ import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class GtHttpClient {
     private int maxHttpTryTime;
     CloseableHttpClient httpclient;
 
-    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
+    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, long keepAliveMinutes, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
         if (connectTimeout <= 0) {
             throw new IllegalArgumentException("connectTimeout must be > 0.");
         }
@@ -63,7 +64,9 @@ public class GtHttpClient {
                 .setSocketTimeout(soTimeout)
                 .setMaxRedirects(0)
                 .build();
-        builder.setDefaultRequestConfig(config).useSystemProperties();
+        builder.setDefaultRequestConfig(config)
+                .setConnectionTimeToLive(keepAliveMinutes, TimeUnit.MINUTES)
+                .useSystemProperties();
         this.httpclient = builder.build();
     }
 

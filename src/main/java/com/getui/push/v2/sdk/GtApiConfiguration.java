@@ -65,6 +65,10 @@ public class GtApiConfiguration {
      * http请求失败，最大尝试次数
      */
     private int maxHttpTryTime = 1;
+    /**
+     * 保持长连接的时长，默认10分钟
+     */
+    private long keepAliveMinutes = 10;
 
     /**
      * http请求时是否需要信任https
@@ -181,6 +185,14 @@ public class GtApiConfiguration {
 
     public void setMaxHttpTryTime(int maxHttpTryTime) {
         this.maxHttpTryTime = maxHttpTryTime;
+    }
+
+    public long getKeepAliveMinutes() {
+        return keepAliveMinutes;
+    }
+
+    public void setKeepAliveMinutes(long keepAliveMinutes) {
+        this.keepAliveMinutes = keepAliveMinutes;
     }
 
     public GtHttpProxyConfig getProxyConfig() {

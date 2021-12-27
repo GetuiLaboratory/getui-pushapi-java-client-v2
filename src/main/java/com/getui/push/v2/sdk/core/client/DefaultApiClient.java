@@ -131,7 +131,8 @@ public class DefaultApiClient {
 
         this.httpManager = new HttpManager(apiConfiguration.getConnectTimeout(),
                 apiConfiguration.getSoTimeout(), apiConfiguration.getMaxHttpTryTime(),
-                apiConfiguration.getProxyConfig(), apiConfiguration.isTrustSSL());
+                apiConfiguration.getKeepAliveMinutes(), apiConfiguration.getProxyConfig(),
+                apiConfiguration.isTrustSSL());
 
         this.hostManager = new HostManager(apiConfiguration, this.httpManager);
         // 分析最稳定域名
