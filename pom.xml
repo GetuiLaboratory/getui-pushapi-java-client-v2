@@ -7,7 +7,7 @@
     <groupId>com.getui.push</groupId>
     <artifactId>restful-sdk</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0.4</version>
+    <version>1.0.0.5</version>
     <url>https://github.com/GetuiLaboratory/getui-pushapi-java-client-v2</url>
     <name>Getui Push API Java Client</name>
     <description>Getui's officially supported Java client library for accessing Getui APIs.</description>

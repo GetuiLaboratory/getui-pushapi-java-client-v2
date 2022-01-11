@@ -65,7 +65,7 @@ public class GtHttpClient {
                 .setMaxRedirects(0)
                 .build();
         builder.setDefaultRequestConfig(config)
-                .setConnectionTimeToLive(keepAliveMinutes, TimeUnit.MINUTES)
+                .setConnectionTimeToLive(keepAliveMinutes, TimeUnit.SECONDS)
                 .useSystemProperties();
         this.httpclient = builder.build();
     }
