@@ -131,7 +131,7 @@ public class DefaultApiClient {
 
         this.httpManager = new HttpManager(apiConfiguration.getConnectTimeout(),
                 apiConfiguration.getSoTimeout(), apiConfiguration.getMaxHttpTryTime(),
-                apiConfiguration.getKeepAliveMinutes(), apiConfiguration.getProxyConfig(),
+                apiConfiguration.getKeepAliveSeconds(), apiConfiguration.getProxyConfig(),
                 apiConfiguration.isTrustSSL());
 
         this.hostManager = new HostManager(apiConfiguration, this.httpManager);

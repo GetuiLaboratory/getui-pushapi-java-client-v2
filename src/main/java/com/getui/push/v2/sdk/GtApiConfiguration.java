@@ -66,9 +66,10 @@ public class GtApiConfiguration {
      */
     private int maxHttpTryTime = 1;
     /**
-     * 保持长连接的时长，默认10分钟
+     * 保持长连接的时长，默认10s，最大{@link #MAX_KEEP_ALIVE_SECONDS}
      */
-    private long keepAliveMinutes = 10;
+    private long keepAliveSeconds = 10;
+    final long MAX_KEEP_ALIVE_SECONDS = 30;
 
     /**
      * http请求时是否需要信任https
@@ -187,12 +188,37 @@ public class GtApiConfiguration {
         this.maxHttpTryTime = maxHttpTryTime;
     }
 
-    public long getKeepAliveMinutes() {
-        return keepAliveMinutes;
+    public long getKeepAliveSeconds() {
+        return keepAliveSeconds;
     }
 
+    public void setKeepAliveSeconds(long keepAliveSeconds) {
+        if (keepAliveSeconds > MAX_KEEP_ALIVE_SECONDS) {
+            this.keepAliveSeconds = MAX_KEEP_ALIVE_SECONDS;
+        } else {
+            this.keepAliveSeconds = keepAliveSeconds;
+        }
+    }
+
+    /**
+     * replaced by <code>getKeepAliveSeconds()</code>.
+     * will be removed in the next version
+     *
+     * @return
+     */
+    @Deprecated
+    public long getKeepAliveMinutes() {
+        return 0;
+    }
+
+    /**
+     * replaced by <code>setKeepAliveSeconds()</code>.
+     * will be removed in the next version
+     *
+     * @param keepAliveMinutes
+     */
+    @Deprecated
     public void setKeepAliveMinutes(long keepAliveMinutes) {
-        this.keepAliveMinutes = keepAliveMinutes;
     }
 
     public GtHttpProxyConfig getProxyConfig() {
