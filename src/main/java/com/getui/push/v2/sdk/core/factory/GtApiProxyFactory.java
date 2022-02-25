@@ -79,7 +79,8 @@ public class GtApiProxyFactory implements InvocationHandler {
         if ("toString".equalsIgnoreCase(method.getName()) && Utils.isEmpty(args)) {
             return this.toString();
         }
-        ApiParam apiParam = gtApiRegistry.get(method);
+        final BaseParam baseParam = gtApiRegistry.get(method);
+        ApiParam apiParam = new ApiParam(baseParam);
         // 解析参数 -> HTTP参数
         handleApiParam(method, args, apiParam);
         return defaultApiClient.execute(apiParam);
@@ -115,24 +116,12 @@ public class GtApiProxyFactory implements InvocationHandler {
         cache.remove(this.defaultApiClient);
     }
 
-    /**
-     * HTTP请求的参数
-     */
     public static class ApiParam {
-        /**
-         * 接口调用相对路径
-         * eg. /auth
-         */
-        private String uri;
-        /**
-         * 接口请求方式 GET/POST/PUT/DELETE
-         */
-        private String method;
+        private final BaseParam baseParam;
         /**
          * 路径参数
          */
         private String pathParams;
-
         /**
          * query参数
          */
@@ -141,14 +130,10 @@ public class GtApiProxyFactory implements InvocationHandler {
          * body参数
          */
         private Object body;
-        /**
-         * 是否需要token
-         */
-        private Boolean needToken;
-        /**
-         * 返回值类型
-         */
-        private Type returnType;
+
+        public ApiParam(BaseParam baseParam) {
+            this.baseParam = baseParam;
+        }
 
         /**
          * 处理路径参数
@@ -160,17 +145,17 @@ public class GtApiProxyFactory implements InvocationHandler {
             setPathParams(handleArg(arg));
         }
 
-        public void handleQueryParam(Object arg, String name) {
-            Assert.notNull(arg, "query参数");
-            final String param = handleArg(arg);
-            addQueryParams(name, param);
-        }
-
         private void addQueryParams(String name, String param) {
             if (queryParams == null) {
                 queryParams = new ArrayList<String>();
             }
             queryParams.add(name + "=" + param);
+        }
+
+        public void handleQueryParam(Object arg, String name) {
+            Assert.notNull(arg, "query参数");
+            final String param = handleArg(arg);
+            addQueryParams(name, param);
         }
 
         private String handleArg(Object arg) {
@@ -195,19 +180,23 @@ public class GtApiProxyFactory implements InvocationHandler {
         }
 
         public String getUri() {
-            return uri;
-        }
-
-        public void setUri(String uri) {
-            this.uri = uri;
+            return baseParam.getUri();
         }
 
         public String getMethod() {
-            return method;
+            return baseParam.getMethod();
         }
 
-        public void setMethod(String method) {
-            this.method = method;
+        public Boolean getNeedToken() {
+            return baseParam.getNeedToken();
+        }
+
+        public Type getReturnType() {
+            return baseParam.getReturnType();
+        }
+
+        public BaseParam getBaseParam() {
+            return baseParam;
         }
 
         public String getPathParams() {
@@ -234,6 +223,58 @@ public class GtApiProxyFactory implements InvocationHandler {
             this.body = body;
         }
 
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("ApiParam{");
+            sb.append("baseParam=").append(baseParam);
+            sb.append(", pathParams='").append(pathParams).append('\'');
+            sb.append(", queryParams=").append(queryParams);
+            sb.append(", body=").append(body);
+            sb.append('}');
+            return sb.toString();
+        }
+    }
+
+    /**
+     * HTTP请求的参数
+     */
+    public static class BaseParam {
+        /**
+         * 接口调用相对路径
+         * eg. /auth
+         */
+        private String uri;
+        /**
+         * 接口请求方式 GET/POST/PUT/DELETE
+         */
+        private String method;
+
+        /**
+         * 是否需要token
+         */
+        private Boolean needToken;
+        /**
+         * 返回值类型
+         */
+        private Type returnType;
+
+        public String getUri() {
+            return uri;
+        }
+
+        public void setUri(String uri) {
+            this.uri = uri;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
+
         public Boolean getNeedToken() {
             return needToken;
         }
@@ -252,11 +293,9 @@ public class GtApiProxyFactory implements InvocationHandler {
 
         @Override
         public String toString() {
-            return "ApiParam{" +
+            return "BaseParam{" +
                     "uri='" + uri + '\'' +
                     ", method='" + method + '\'' +
-                    ", pathParams='" + pathParams + '\'' +
-                    ", body=" + body +
                     ", needToken=" + needToken +
                     ", returnType=" + returnType +
                     '}';

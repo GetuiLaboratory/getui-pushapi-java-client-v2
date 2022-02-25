@@ -36,7 +36,7 @@ public class GtHttpClient {
     private int maxHttpTryTime;
     CloseableHttpClient httpclient;
 
-    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, long keepAliveMinutes, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
+    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, long keepAliveSeconds, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
         if (connectTimeout <= 0) {
             throw new IllegalArgumentException("connectTimeout must be > 0.");
         }
@@ -65,7 +65,7 @@ public class GtHttpClient {
                 .setMaxRedirects(0)
                 .build();
         builder.setDefaultRequestConfig(config)
-                .setConnectionTimeToLive(keepAliveMinutes, TimeUnit.SECONDS)
+                .setConnectionTimeToLive(keepAliveSeconds, TimeUnit.SECONDS)
                 .useSystemProperties();
         this.httpclient = builder.build();
     }
