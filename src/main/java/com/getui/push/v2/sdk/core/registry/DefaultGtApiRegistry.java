@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultGtApiRegistry implements GtApiRegistry {
 
-    private Map<String, GtApiProxyFactory.ApiParam> cache = new ConcurrentHashMap<String, GtApiProxyFactory.ApiParam>();
+    private Map<String, GtApiProxyFactory.BaseParam> cache = new ConcurrentHashMap<String, GtApiProxyFactory.BaseParam>();
 
     @Override
     public void register(Method method) {
@@ -32,31 +32,31 @@ public class DefaultGtApiRegistry implements GtApiRegistry {
     }
 
     @Override
-    public GtApiProxyFactory.ApiParam get(Method method) {
-        GtApiProxyFactory.ApiParam apiParam = cache.get(method.toString());
-        if (apiParam != null) {
-            return apiParam;
+    public GtApiProxyFactory.BaseParam get(Method method) {
+        GtApiProxyFactory.BaseParam param = cache.get(method.toString());
+        if (param != null) {
+            return param;
         }
         synchronized (cache) {
-            apiParam = cache.get(method.toString());
-            if (apiParam != null) {
-                return apiParam;
+            param = cache.get(method.toString());
+            if (param != null) {
+                return param;
             }
-            apiParam = doAnalise(method);
-            cache.put(method.toString(), apiParam);
-            return apiParam;
+            param = doAnalise(method);
+            cache.put(method.toString(), param);
+            return param;
         }
     }
 
-    private GtApiProxyFactory.ApiParam doAnalise(Method method) {
-        GtApiProxyFactory.ApiParam apiParam = new GtApiProxyFactory.ApiParam();
+    private GtApiProxyFactory.BaseParam doAnalise(Method method) {
+        GtApiProxyFactory.BaseParam param = new GtApiProxyFactory.BaseParam();
         // 解析方法注解 -> HTTP请求方式和uri
-        handleAnnotation(method.getAnnotations(), apiParam);
+        handleAnnotation(method.getAnnotations(), param);
         // 获取泛型类型，用于反序列化使用
         Type[] types = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments();
         // 设置返回值类型，用于反序列化
-        apiParam.setReturnType(new GtTypeHelper(method.getReturnType(), types).getType());
-        return apiParam;
+        param.setReturnType(new GtTypeHelper(method.getReturnType(), types).getType());
+        return param;
     }
 
     /**
@@ -84,7 +84,7 @@ public class DefaultGtApiRegistry implements GtApiRegistry {
      * @param annotations
      * @param apiParam    notnull
      */
-    private GtApiProxyFactory.ApiParam handleAnnotation(Annotation[] annotations, GtApiProxyFactory.ApiParam apiParam) {
+    private GtApiProxyFactory.BaseParam handleAnnotation(Annotation[] annotations, GtApiProxyFactory.BaseParam apiParam) {
         if (apiParam == null) {
             throw new ApiException("apiParam cannot be null.");
         }
