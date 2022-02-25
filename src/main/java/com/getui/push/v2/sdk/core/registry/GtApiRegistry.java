@@ -24,6 +24,6 @@ public interface GtApiRegistry {
      * @param method 方法
      * @return
      */
-    GtApiProxyFactory.ApiParam get(Method method);
+    GtApiProxyFactory.BaseParam get(Method method);
 
 }
