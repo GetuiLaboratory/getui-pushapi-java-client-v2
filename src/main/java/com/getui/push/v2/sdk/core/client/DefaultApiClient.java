@@ -344,6 +344,7 @@ public class DefaultApiClient {
      * @return
      */
     private void handleHeader(Map<String, Object> header) {
+        header.put("sdkVersion", Configs.SDK_VERSION);
         if (!apiConfiguration.isOpenAnalyseStableDomainSwitch()) {
             return;
         }

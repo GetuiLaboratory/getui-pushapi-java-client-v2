@@ -13,7 +13,7 @@ public interface Configs {
 
     String HEADER_DOMAIN_HASH_KEY = "domainHash";
     String HEADER_OPEN_STABLE_DOMAIN = "openStableDomain";
-    String SDK_VERSION = "1.0";
+    String SDK_VERSION = "1.0.0.6";
     /**
      * 预置域名列表
      */
