@@ -67,7 +67,9 @@ public class ApiHelper {
         configuration.check();
         String key = configuration.keyOfCache();
         ApiHelper apiHelper = apiHelperCache.remove(key);
-        apiHelper.gtApiProxyFactory.close();
+        if (apiHelper != null) {
+            apiHelper.gtApiProxyFactory.close();
+        }
     }
 
     private ApiHelper(GtApiProxyFactory gtApiProxyFactory) {

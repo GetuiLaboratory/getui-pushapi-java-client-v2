@@ -36,7 +36,13 @@ public class GtHttpClient {
     private int maxHttpTryTime;
     CloseableHttpClient httpclient;
 
-    public GtHttpClient(int connectTimeout, int soTimeout, int maxHttpTryTime, long keepAliveSeconds, GtHttpProxyConfig proxyConfig, boolean trustSSL) {
+    public GtHttpClient(int connectTimeout,
+                        int soTimeout,
+                        int connectionRequestTimeout,
+                        int maxHttpTryTime,
+                        long keepAliveSeconds,
+                        GtHttpProxyConfig proxyConfig,
+                        boolean trustSSL) {
         if (connectTimeout <= 0) {
             throw new IllegalArgumentException("connectTimeout must be > 0.");
         }
@@ -62,6 +68,7 @@ public class GtHttpClient {
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(connectTimeout)
                 .setSocketTimeout(soTimeout)
+                .setConnectionRequestTimeout(connectionRequestTimeout)
                 .setMaxRedirects(0)
                 .build();
         builder.setDefaultRequestConfig(config)
@@ -124,11 +131,13 @@ public class GtHttpClient {
             response = httpclient.execute(request);
             final StatusLine statusLine = response.getStatusLine();
             code = statusLine.getStatusCode();
+            // toString内部回收connection
+            String responseBody = EntityUtils.toString(response.getEntity());
             if (code == HttpURLConnection.HTTP_OK ||
                     code == HttpURLConnection.HTTP_BAD_REQUEST ||
                     code == HttpURLConnection.HTTP_UNAUTHORIZED ||
                     code == HttpURLConnection.HTTP_FORBIDDEN) {
-                return EntityUtils.toString(response.getEntity());
+                return responseBody;
             } else if (code == HttpURLConnection.HTTP_NOT_FOUND) {
                 throw new ApiException("not found.", code);
             }

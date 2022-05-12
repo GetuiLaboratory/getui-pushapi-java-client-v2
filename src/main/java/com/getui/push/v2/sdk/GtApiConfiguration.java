@@ -62,14 +62,18 @@ public class GtApiConfiguration {
      */
     private int connectTimeout = 60000;
     /**
+     * 从连接池中获取http连接的超时时间，单位ms
+     */
+    private int connectionRequestTimeout = 0;
+    /**
      * http请求失败，最大尝试次数
      */
     private int maxHttpTryTime = 1;
     /**
-     * 保持长连接的时长，默认10s，最大{@link #MAX_KEEP_ALIVE_SECONDS}
+     * 保持长连接的时长，最大{@link #MAX_KEEP_ALIVE_SECONDS}
      */
-    private long keepAliveSeconds = 10;
-    final long MAX_KEEP_ALIVE_SECONDS = 30;
+    private long keepAliveSeconds = 30;
+    final long MAX_KEEP_ALIVE_SECONDS = 20 * 60;
 
     /**
      * http请求时是否需要信任https
@@ -178,6 +182,14 @@ public class GtApiConfiguration {
 
     public void setConnectTimeout(int connectTimeout) {
         this.connectTimeout = connectTimeout;
+    }
+
+    public int getConnectionRequestTimeout() {
+        return connectionRequestTimeout;
+    }
+
+    public void setConnectionRequestTimeout(int connectionRequestTimeout) {
+        this.connectionRequestTimeout = connectionRequestTimeout;
     }
 
     public int getMaxHttpTryTime() {
