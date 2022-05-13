@@ -3,10 +3,10 @@ package com.getui.push.v2.sdk.api;
 import com.getui.push.v2.sdk.ApiHelper;
 import com.getui.push.v2.sdk.GtApiConfiguration;
 import com.getui.push.v2.sdk.api.env.ApiContext;
+import com.getui.push.v2.sdk.api.util.Utils;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.res.statistic.StatisticDTO;
 import com.getui.push.v2.sdk.dto.res.statistic.UserStatisticDTO;
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,14 +34,14 @@ public class StatisticApiTest {
     @Test
     public void queryPushResultByTaskIds() {
         final ApiResult<Map<String, Map<String, StatisticDTO>>> result = pushApi.queryPushResultByTaskIds(
-                Sets.newHashSet("taskId"));
+                Utils.newHashSet("taskId"));
         System.out.println(result);
     }
 
     @Test
     public void queryPushResultByTaskIdsAndActionIds() {
-        final ApiResult<Map<String, Map<String, StatisticDTO>>> result = pushApi.queryPushResultByTaskIdsAndActionIds(Sets.newHashSet("taskId1",
-                "taskId2","taskId3"), Sets.newHashSet("actionId1", "actionId2"));
+        final ApiResult<Map<String, Map<String, StatisticDTO>>> result = pushApi.queryPushResultByTaskIdsAndActionIds(Utils.newHashSet("taskId1",
+                "taskId2", "taskId3"), Utils.newHashSet("actionId1", "actionId2"));
         System.out.println(result);
     }
 

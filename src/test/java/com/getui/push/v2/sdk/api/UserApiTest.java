@@ -4,12 +4,12 @@ import com.getui.push.v2.sdk.ApiHelper;
 import com.getui.push.v2.sdk.GtApiConfiguration;
 import com.getui.push.v2.sdk.GtHttpProxyConfig;
 import com.getui.push.v2.sdk.api.env.ApiContext;
+import com.getui.push.v2.sdk.api.util.Utils;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.CommonEnum;
 import com.getui.push.v2.sdk.dto.req.*;
 import com.getui.push.v2.sdk.dto.res.AliasResDTO;
 import com.getui.push.v2.sdk.dto.res.QueryCidResDTO;
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,24 +44,24 @@ public class UserApiTest {
 
     @Test
     public void addBlackUser() {
-        System.out.println(userApi.addBlackUser(Sets.newHashSet(cid)));
+        System.out.println(userApi.addBlackUser(Utils.newHashSet(cid)));
     }
 
     @Test
     public void removeBlackUser() {
-        System.out.println(userApi.removeBlackUser(Sets.newHashSet(Sets.newHashSet(cid))));
+        System.out.println(userApi.removeBlackUser(Utils.newHashSet(cid)));
     }
 
     @Test
     public void queryUserStatus() {
-        System.out.println(userApi.queryUserStatus(Sets.newHashSet(cid)));
+        System.out.println(userApi.queryUserStatus(Utils.newHashSet(cid)));
     }
 
     @Test
     public void setBadge() {
         BadgeDTO badgeDTO = new BadgeDTO();
         badgeDTO.setBadge("+1");
-        System.out.println(userApi.setBadge(Sets.newHashSet(cid), badgeDTO));
+        System.out.println(userApi.setBadge(Utils.newHashSet(cid), badgeDTO));
     }
 
     @Test

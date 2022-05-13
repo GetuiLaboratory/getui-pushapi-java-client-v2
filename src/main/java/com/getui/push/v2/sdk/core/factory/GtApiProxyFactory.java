@@ -5,7 +5,6 @@ import com.getui.push.v2.sdk.anno.param.GtPathParam;
 import com.getui.push.v2.sdk.anno.param.GtQueryParam;
 import com.getui.push.v2.sdk.common.ApiException;
 import com.getui.push.v2.sdk.common.Assert;
-import com.getui.push.v2.sdk.common.util.Utils;
 import com.getui.push.v2.sdk.core.client.DefaultApiClient;
 import com.getui.push.v2.sdk.core.registry.DefaultGtApiRegistry;
 import com.getui.push.v2.sdk.core.registry.GtApiRegistry;
@@ -26,7 +25,7 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author getui
  */
-public class GtApiProxyFactory implements InvocationHandler {
+public class GtApiProxyFactory {
 
     /**
      * 保证一个{@link DefaultApiClient}对象对应一个{@link GtApiProxyFactory}对象
@@ -71,19 +70,25 @@ public class GtApiProxyFactory implements InvocationHandler {
      * @return
      */
     public <T> T createProxy(Class<T> apiService) {
-        return (T) Proxy.newProxyInstance(apiService.getClassLoader(), new Class[]{apiService}, this);
+        return (T) Proxy.newProxyInstance(apiService.getClassLoader(), new Class[]{apiService}, new ApiProxyHandler());
     }
 
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) {
-        if ("toString".equalsIgnoreCase(method.getName()) && Utils.isEmpty(args)) {
-            return this.toString();
+    class ApiProxyHandler implements InvocationHandler {
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) {
+            try {
+                if (Object.class.equals(method.getDeclaringClass())) {
+                    return method.invoke(this, args);
+                }
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+            }
+            final BaseParam baseParam = gtApiRegistry.get(method);
+            ApiParam apiParam = new ApiParam(baseParam);
+            // 解析参数 -> HTTP参数
+            handleApiParam(method, args, apiParam);
+            return defaultApiClient.execute(apiParam);
         }
-        final BaseParam baseParam = gtApiRegistry.get(method);
-        ApiParam apiParam = new ApiParam(baseParam);
-        // 解析参数 -> HTTP参数
-        handleApiParam(method, args, apiParam);
-        return defaultApiClient.execute(apiParam);
     }
 
     /**
