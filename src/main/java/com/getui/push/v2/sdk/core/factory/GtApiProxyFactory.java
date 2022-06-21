@@ -121,7 +121,13 @@ public class GtApiProxyFactory {
         cache.remove(this.defaultApiClient);
     }
 
+    /**
+     * HTTP请求的参数
+     */
     public static class ApiParam {
+        /**
+         * 基础参数，从方法注解中解析
+         */
         private final BaseParam baseParam;
         /**
          * 路径参数

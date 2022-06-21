@@ -1,6 +1,7 @@
 package com.getui.push.v2.sdk;
 
 import com.getui.push.v2.sdk.common.Assert;
+import com.getui.push.v2.sdk.common.util.Utils;
 import org.apache.http.client.config.RequestConfig;
 
 /**
@@ -84,6 +85,13 @@ public class GtApiConfiguration {
      * http请求设置代理，默认不设置
      */
     private GtHttpProxyConfig proxyConfig;
+
+    /**
+     * 缓存key的前缀，用户自定义，只用作缓存key的前缀，无实际意义；
+     * 如果用户希望每次调用 {@link ApiHelper#build(GtApiConfiguration)} 都创建独立的对象，可以设置不同的前缀；否则无需设置
+     * 非特殊场景，不建议设置
+     */
+    private String cachePrefix;
 
     /**
      * @param domain 接口调用前缀, 可不含{@link #appId}
@@ -212,6 +220,14 @@ public class GtApiConfiguration {
         }
     }
 
+    public String getCachePrefix() {
+        return cachePrefix;
+    }
+
+    public void setCachePrefix(String cachePrefix) {
+        this.cachePrefix = cachePrefix;
+    }
+
     /**
      * replaced by <code>getKeepAliveSeconds()</code>.
      * will be removed in the next version
@@ -276,7 +292,11 @@ public class GtApiConfiguration {
      */
     public String keyOfCache() {
         check();
-        return String.format("%s|%s|%s", this.getAppId(), this.getAppKey(), this.getMasterSecret());
+        if (Utils.isEmpty(getCachePrefix())) {
+            return String.format("%s|%s|%s", this.getAppId(), this.getAppKey(), this.getMasterSecret());
+        } else {
+            return String.format("%s|%s|%s|%s", this.getCachePrefix(), this.getAppId(), this.getAppKey(), this.getMasterSecret());
+        }
     }
 
     /**
@@ -286,7 +306,11 @@ public class GtApiConfiguration {
      */
     public String prefixOfKey() {
         check();
-        return String.format("%s|%s", this.getAppId(), this.getAppKey());
+        if (Utils.isEmpty(getCachePrefix())) {
+            return String.format("%s|%s", this.getAppId(), this.getAppKey());
+        } else {
+            return String.format("%s|%s|%s", this.getCachePrefix(), this.getAppId(), this.getAppKey());
+        }
     }
 
 }

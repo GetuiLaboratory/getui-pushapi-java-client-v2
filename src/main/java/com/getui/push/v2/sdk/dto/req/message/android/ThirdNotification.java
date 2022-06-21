@@ -26,7 +26,11 @@ public class ThirdNotification {
     private String clickType;
 
     /**
-     * 点击通知打开应用特定页面，长度 ≤ 2048;
+     * 点击通知打开应用特定页面，长度 ≤ 4096，不同厂商限制不同，具体限制参考各厂商文档;
+     * hw：没有限制
+     * vv：1024字符
+     * mz：1000字节
+     * op: ≤2000字节
      * 示例：intent:#Intent;component=你的包名/你要打开的 activity 全路径;S.parm1=value1;S.parm2=value2;end
      */
     private String intent;

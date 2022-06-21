@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.0.0.8
+### update
+* ApiHelper和DefaultApiClient 缓存key支持设置自定义前缀，满足客户特殊使用场景
+* 完善参数和注释
+
 ## 1.0.0.7
 ### Fix
 * 修复超时重试http连接未释放问题
