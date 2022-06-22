@@ -8,8 +8,8 @@ import com.getui.push.v2.sdk.core.DefaultJson;
 import com.getui.push.v2.sdk.core.client.DefaultApiClient;
 import com.getui.push.v2.sdk.core.factory.GtApiProxyFactory;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * create by getui on 2020/6/7
@@ -22,7 +22,7 @@ public class ApiHelper {
 
     private static final Object BUILD_LOCK = new Object();
 
-    private static final Map<String, ApiHelper> apiHelperCache = new HashMap<String, ApiHelper>(4);
+    private static final Map<String, ApiHelper> apiHelperCache = new ConcurrentHashMap<String, ApiHelper>(4);
 
     /**
      * @param configuration 配置信息类
@@ -62,6 +62,11 @@ public class ApiHelper {
         }
     }
 
+    /**
+     * 删除缓存，并关闭守护线程，不影响已创建的Api的使用
+     *
+     * @param configuration
+     */
     public static void close(GtApiConfiguration configuration) {
         Assert.notNull(configuration, "configuration");
         configuration.check();

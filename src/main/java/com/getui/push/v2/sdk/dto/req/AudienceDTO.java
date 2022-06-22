@@ -21,6 +21,11 @@ public class AudienceDTO {
      */
     private boolean isAsync;
 
+    /**
+     * 是否返回别名详情,返回别名详情的前提：is_async=false
+     */
+    private boolean needAliasDetail;
+
     public Audience getAudience() {
         return audience;
     }
@@ -45,12 +50,21 @@ public class AudienceDTO {
         isAsync = async;
     }
 
+    public boolean isNeedAliasDetail() {
+        return needAliasDetail;
+    }
+
+    public void setNeedAliasDetail(boolean needAliasDetail) {
+        this.needAliasDetail = needAliasDetail;
+    }
+
     @Override
     public String toString() {
         return "AudienceDTO{" +
                 "audience=" + audience +
                 ", taskid='" + taskid + '\'' +
                 ", isAsync=" + isAsync +
+                ", needAliasDetail=" + needAliasDetail +
                 '}';
     }
 }

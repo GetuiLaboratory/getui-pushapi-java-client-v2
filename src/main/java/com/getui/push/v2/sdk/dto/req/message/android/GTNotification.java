@@ -3,6 +3,9 @@ package com.getui.push.v2.sdk.dto.req.message.android;
 import com.getui.push.v2.sdk.dto.CommonEnum;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * @author getui
+ */
 public class GTNotification {
     /**
      * 第三方厂商通知标题，长度 ≤ 50
@@ -41,7 +44,7 @@ public class GTNotification {
     private String clickType;
 
     /**
-     * 点击通知打开应用特定页面，长度 ≤ 2048;
+     * 点击通知打开应用特定页面，长度 ≤ 4096;
      * 示例：intent:#Intent;component=你的包名/你要打开的 activity 全路径;S.parm1=value1;S.parm2=value2;end
      */
     private String intent;
@@ -74,6 +77,13 @@ public class GTNotification {
      */
     @SerializedName("badge_add_num")
     private String badgeAddNum;
+
+    /**
+     * 消息折叠分组，设置成相同thread_id的消息会被折叠（仅支持个推渠道下发的安卓消息）。
+     * 目前与iOS的thread_id设置无关，安卓和iOS需要分别设置。
+     */
+    @SerializedName("thread_id")
+    private String threadId;
 
     public String getTitle() {
         return title;
@@ -203,6 +213,14 @@ public class GTNotification {
         this.badgeAddNum = badgeAddNum;
     }
 
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
+    }
+
     @Override
     public String toString() {
         return "GTNotification{" +
@@ -222,6 +240,7 @@ public class GTNotification {
                 ", notifyId='" + notifyId + '\'' +
                 ", ringName='" + ringName + '\'' +
                 ", badgeAddNum='" + badgeAddNum + '\'' +
+                ", threadId='" + threadId + '\'' +
                 '}';
     }
 }

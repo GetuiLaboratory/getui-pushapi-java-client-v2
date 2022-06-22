@@ -6,7 +6,9 @@ import com.getui.push.v2.sdk.api.AuthApi;
 import com.getui.push.v2.sdk.common.ApiException;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.common.Assert;
+import com.getui.push.v2.sdk.common.Config;
 import com.getui.push.v2.sdk.common.http.HttpManager;
+import com.getui.push.v2.sdk.common.type.TypeReference;
 import com.getui.push.v2.sdk.common.util.Utils;
 import com.getui.push.v2.sdk.core.Configs;
 import com.getui.push.v2.sdk.core.domain.RasDomainBO;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.regex.Pattern;
 
 /**
  * 1. 管理token
@@ -107,6 +110,8 @@ public class DefaultApiClient {
                 while (iterator.hasNext()) {
                     Map.Entry<String, DefaultApiClient> entry = iterator.next();
                     if (entry.getKey().startsWith(prefixOfKey)) {
+                        // 缓存更新之前校验应用信息是否正确
+                        checkAppInfo(apiConfiguration, json);
                         defaultApiClient = entry.getValue();
                         defaultApiClient.apiConfiguration = apiConfiguration;
                         iterator.remove();
@@ -119,6 +124,42 @@ public class DefaultApiClient {
             }
         }
         return defaultApiClient;
+    }
+
+    final static Pattern HIDE_MASTER_SECRET_PATTERN = Pattern.compile("(.{3}).+(.{3})");
+
+    static void checkAppInfo(GtApiConfiguration configuration, IJson json) {
+        DefaultApiClient client = null;
+        try {
+            GtApiConfiguration apiConfiguration = new GtApiConfiguration();
+            apiConfiguration.setAppId(configuration.getAppId());
+            apiConfiguration.setAppKey(configuration.getAppKey());
+            apiConfiguration.setMasterSecret(configuration.getMasterSecret());
+            apiConfiguration.setDomain(configuration.getDomain());
+            apiConfiguration.setOpenCheckHealthDataSwitch(false);
+            apiConfiguration.setOpenAnalyseStableDomainSwitch(false);
+            apiConfiguration.setTrustSSL(configuration.isTrustSSL());
+            apiConfiguration.setProxyConfig(configuration.getProxyConfig());
+
+            client = new DefaultApiClient(apiConfiguration, json);
+            final String fullUrl = client.genFullUrl(Config.AUTH_URI, null, null);
+            AuthDTO authDTO = AuthDTO.build(apiConfiguration.getAppKey(), apiConfiguration.getMasterSecret());
+            String result = client.httpManager.syncHttps(fullUrl, "POST", null, json.toJson(authDTO), client.CONTENT_TYPE);
+            ApiResult<TokenDTO> apiResult = json.fromJson(result, new TypeReference<ApiResult<TokenDTO>>() {
+            }.getType());
+            if (!apiResult.isSuccess()) {
+                String hideSecret = HIDE_MASTER_SECRET_PATTERN.matcher(apiConfiguration.getMasterSecret()).replaceAll("$1********************$2");
+                log.error("check app info failed. appId: {}, appKey: {}, masterSecret: {}, result: {}",
+                        apiConfiguration.getAppId(), apiConfiguration.getAppKey(), hideSecret, apiResult);
+                throw new RuntimeException("check app info failed. please check app info. appId: "
+                        + apiConfiguration.getAppId() + ", appKey: " + apiConfiguration.getAppKey()
+                        + ", masterSecret: " + hideSecret);
+            }
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
     }
 
     private DefaultApiClient(GtApiConfiguration apiConfiguration, IJson json) {

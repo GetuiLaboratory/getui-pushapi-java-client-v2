@@ -13,4 +13,5 @@ public class Config {
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
     public static final Charset UTF_8 = Charset.forName("UTF-8");
     public final static String CHECK_HEALTH_DATA_SWITCH_KEY = GtApiConfiguration.CHECK_HEALTH_DATA_SWITCH_KEY;
+    public static final String AUTH_URI = "/auth";
 }
