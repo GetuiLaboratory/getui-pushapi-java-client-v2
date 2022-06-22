@@ -53,25 +53,13 @@ public class PushApiTest {
     @Test
     public void pushToSingleByCid() throws InterruptedException {
         PushDTO<Audience> pushDTO = pushDTO();
-        int num = 0;
         fullCid(pushDTO);
-        while (true) {
-            pushDTO.setRequestId(System.currentTimeMillis() + "");
-            ApiResult<Map<String, Map<String, String>>> apiResult = pushApi.pushToSingleByCid(pushDTO);
-            if (apiResult.isSuccess()) {
-                // success
-            } else {
-                // failed
-            }
-            System.err.println(apiResult);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            if (num++ == 50) {
-                ApiHelper.close(apiContext.configuration);
-            }
-            break;
+        pushDTO.setRequestId(System.currentTimeMillis() + "");
+        ApiResult<Map<String, Map<String, String>>> apiResult = pushApi.pushToSingleByCid(pushDTO);
+        if (apiResult.isSuccess()) {
+            // success
+        } else {
+            // failed
         }
     }
 

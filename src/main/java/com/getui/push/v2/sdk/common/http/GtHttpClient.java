@@ -131,8 +131,12 @@ public class GtHttpClient {
             response = httpclient.execute(request);
             final StatusLine statusLine = response.getStatusLine();
             code = statusLine.getStatusCode();
+            String responseBody = "";
             // toString内部回收connection
-            String responseBody = EntityUtils.toString(response.getEntity());
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                responseBody = EntityUtils.toString(entity);
+            }
             if (code == HttpURLConnection.HTTP_OK ||
                     code == HttpURLConnection.HTTP_BAD_REQUEST ||
                     code == HttpURLConnection.HTTP_UNAUTHORIZED ||
