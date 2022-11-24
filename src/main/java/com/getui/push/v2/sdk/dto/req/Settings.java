@@ -20,6 +20,10 @@ public class Settings {
      * 定时推送时间，格式：毫秒时间戳
      */
     private Long scheduleTime;
+    /**
+     * 自定义回执字段，SVIP功能
+     */
+    private String customCallback;
 
     public Integer getTtl() {
         return ttl;
@@ -53,6 +57,14 @@ public class Settings {
         this.scheduleTime = scheduleTime;
     }
 
+    public String getCustomCallback() {
+        return customCallback;
+    }
+
+    public void setCustomCallback(String customCallback) {
+        this.customCallback = customCallback;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -60,6 +72,7 @@ public class Settings {
                 ", strategy=" + strategy +
                 ", speed=" + speed +
                 ", scheduleTime=" + scheduleTime +
+                ", customCallback=" + customCallback +
                 '}';
     }
 }
