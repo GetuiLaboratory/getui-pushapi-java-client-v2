@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.0.0.9
+### update
+* 新增自定义回执字段SVIP功能
+
 ## 1.0.0.8
 ### update
 * ApiHelper和DefaultApiClient 缓存key支持设置自定义前缀，满足客户特殊使用场景
