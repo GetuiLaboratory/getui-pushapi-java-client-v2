@@ -1,86 +1,69 @@
 package com.getui.push.v2.sdk.dto.res.statistic;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
 
 /**
  * @author getui
  */
-public class StatisticDTO {
+public class StatisticDTO extends HashMap<String, Object> {
 
     /**
      * 可下发数
      */
-    @SerializedName("msg_num")
-    private Integer msgNum;
-    /**
-     * 下发数
-     */
-    @SerializedName("target_num")
-    private Integer targetNum;
-    /**
-     * 到达数
-     */
-    @SerializedName("receive_num")
-    private Integer receiveNum;
-    /**
-     * 展示数
-     */
-    @SerializedName("display_num")
-    private Integer displayNum;
-    /**
-     * 点击数
-     */
-    @SerializedName("click_num")
-    private Integer clickNum;
-
     public Integer getMsgNum() {
-        return msgNum;
+        return (Integer) this.get("msg_num");
     }
 
     public void setMsgNum(Integer msgNum) {
-        this.msgNum = msgNum;
+        this.put("msg_num", msgNum);
     }
 
+    /**
+     * 下发数
+     */
     public Integer getTargetNum() {
-        return targetNum;
+        return (Integer) this.get("target_num");
     }
 
     public void setTargetNum(Integer targetNum) {
-        this.targetNum = targetNum;
+        this.put("target_num", targetNum);
     }
 
+    /**
+     * 到达数
+     */
     public Integer getReceiveNum() {
-        return receiveNum;
+        return (Integer) this.get("receive_num");
     }
 
     public void setReceiveNum(Integer receiveNum) {
-        this.receiveNum = receiveNum;
+        this.put("receive_num", receiveNum);
     }
 
+    /**
+     * 展示数
+     */
     public Integer getDisplayNum() {
-        return displayNum;
+        return (Integer) this.get("display_num");
     }
 
     public void setDisplayNum(Integer displayNum) {
-        this.displayNum = displayNum;
+        this.put("display_num", displayNum);
     }
 
+    /**
+     * 点击数
+     */
     public Integer getClickNum() {
-        return clickNum;
+        return (Integer) this.get("click_num");
     }
 
     public void setClickNum(Integer clickNum) {
-        this.clickNum = clickNum;
+        this.put("click_num", clickNum);
     }
 
     @Override
     public String toString() {
-        return "StatisticDTO{" +
-                "msgNum=" + msgNum +
-                ", targetNum=" + targetNum +
-                ", receiveNum=" + receiveNum +
-                ", displayNum=" + displayNum +
-                ", clickNum=" + clickNum +
-                '}';
+        return "StatisticDTO" + super.toString();
     }
 }

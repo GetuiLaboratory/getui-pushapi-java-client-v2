@@ -90,8 +90,8 @@ public class UserApiTest {
     @Test
     public void queryAliasByCid() {
         QueryAliasDTO queryAliasDTO = new QueryAliasDTO();
-        queryAliasDTO.add(cid);
-        ApiResult<AliasResDTO> apiResult = userApi.queryAliasByCid(queryAliasDTO.getCidSet());
+        queryAliasDTO.setCid(cid);
+        ApiResult<AliasResDTO> apiResult = userApi.queryAliasByCid(queryAliasDTO.getCid());
         System.out.println(apiResult);
     }
 

@@ -35,11 +35,11 @@ public interface UserApi {
     /**
      * 根据cid查询别名
      *
-     * @param cidList
+     * @param cid
      * @return
      */
     @GtGet(uri = "/user/alias/cid/")
-    ApiResult<AliasResDTO> queryAliasByCid(@GtPathParam Set<String> cidList);
+    ApiResult<AliasResDTO> queryAliasByCid(@GtPathParam String cid);
 
     /**
      * 根据别名查询cid

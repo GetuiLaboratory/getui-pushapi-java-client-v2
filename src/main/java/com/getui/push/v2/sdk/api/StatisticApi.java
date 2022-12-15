@@ -4,6 +4,7 @@ import com.getui.push.v2.sdk.anno.method.GtGet;
 import com.getui.push.v2.sdk.anno.param.GtPathParam;
 import com.getui.push.v2.sdk.anno.param.GtQueryParam;
 import com.getui.push.v2.sdk.common.ApiResult;
+import com.getui.push.v2.sdk.dto.res.PushCountDTO;
 import com.getui.push.v2.sdk.dto.res.statistic.StatisticDTO;
 import com.getui.push.v2.sdk.dto.res.statistic.UserStatisticDTO;
 
@@ -71,5 +72,23 @@ public interface StatisticApi {
      */
     @GtGet(uri = "/report/online_user")
     ApiResult<Map<String, Map<String, Integer>>> queryOnlineUserData();
+
+
+    /**
+     * 查询推送量
+     *
+     * @return
+     */
+    @GtGet(uri = "/report/push/count")
+    ApiResult<Map<String, Map<String, PushCountDTO>>> queryPushCountData();
+
+    /**
+     * 获取推送实时结果
+     *
+     * @param taskIds
+     * @return
+     */
+    @GtGet(uri = "/report/push/task/${taskid}/detail")
+    ApiResult<Map<String, Map<String, StatisticDTO>>> queryPushTaskDetailData(@GtPathParam Set<String> taskIds);
 
 }

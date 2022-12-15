@@ -500,10 +500,14 @@ public class DefaultApiClient {
             host = host + uri;
         } else {
             host += uri;
-            if (host.endsWith("/")) {
-                host += pathParams;
+            if (Pattern.matches(".*\\$\\{.+}.*", host)) {
+                host = host.replaceAll("\\$\\{.+}", pathParams);
             } else {
-                host = host + "/" + pathParams;
+                if (host.endsWith("/")) {
+                    host += pathParams;
+                } else {
+                    host = host + "/" + pathParams;
+                }
             }
         }
         if (Utils.isEmpty(queryParams)) {
