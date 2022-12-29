@@ -8,7 +8,6 @@ import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.res.PushCountDTO;
 import com.getui.push.v2.sdk.dto.res.statistic.StatisticDTO;
 import com.getui.push.v2.sdk.dto.res.statistic.UserStatisticDTO;
-import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,7 +79,7 @@ public class StatisticApiTest {
     @Test
     public void queryPushTaskDetailData() {
         final ApiResult<Map<String, Map<String, StatisticDTO>>> result = pushApi.queryPushTaskDetailData(
-                Sets.newHashSet("taskId1", "taskId2")
+                Utils.newHashSet("taskId1", "taskId2")
         );
         System.out.println(result);
     }

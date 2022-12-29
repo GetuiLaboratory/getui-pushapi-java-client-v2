@@ -102,7 +102,7 @@ public class GtHttpClient {
 
     public static SSLContext createSSLContext() {
         try {
-            SSLContext sslContext = SSLContext.getInstance("SSLv3");
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             X509TrustManager trustManager = new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
