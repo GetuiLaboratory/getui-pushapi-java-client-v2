@@ -21,9 +21,9 @@
 ```xml
     <dependency>
         <groupId>com.getui.push</groupId>
-        <artifactId>restful-sdk</artifactId>
-        <version>1.0.0.10</version>
-    </dependency>
+    <artifactId>restful-sdk</artifactId>
+    <version>1.0.0.11</version>
+</dependency>
 ```
 
 ## 快速开始

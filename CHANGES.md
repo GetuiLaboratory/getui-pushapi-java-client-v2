@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.0.0.11
+
+### update
+
+* 支持安卓厂商消息撤回
+* HTTPS协议更换(SSLv3 -> TLSv1.2)
+
 ## 1.0.0.10
 
 ### update

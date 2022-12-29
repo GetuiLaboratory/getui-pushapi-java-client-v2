@@ -21,6 +21,11 @@ public class Ups {
      */
     private Map<String, Map<String, Object>> options;
 
+    /**
+     * 撤回消息时使用
+     */
+    private ThirdRevokeBean revoke;
+
     public ThirdNotification getNotification() {
         return notification;
     }
@@ -63,12 +68,21 @@ public class Ups {
         map.put(key, value);
     }
 
+    public ThirdRevokeBean getRevoke() {
+        return revoke;
+    }
+
+    public void setRevoke(ThirdRevokeBean revoke) {
+        this.revoke = revoke;
+    }
+
     @Override
     public String toString() {
         return "Ups{" +
                 "notification=" + notification +
                 ", transmission='" + transmission + '\'' +
-                ", options='" + options + '\'' +
+                ", options=" + options +
+                ", revoke=" + revoke +
                 '}';
     }
 }
