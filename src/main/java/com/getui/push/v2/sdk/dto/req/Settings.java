@@ -25,6 +25,18 @@ public class Settings {
      */
     private String customCallback;
 
+    /**
+     * 是否过滤关闭通知用户
+     * false表示不过滤，true表示过滤
+     */
+    private Boolean filterNotifyOff;
+
+    /**
+     * 厂商智能配额策略-用户连续活跃天数
+     * 单位天，限制3 ~ 15天之间
+     */
+    private Integer activeDays;
+
     public Integer getTtl() {
         return ttl;
     }
@@ -65,6 +77,22 @@ public class Settings {
         this.customCallback = customCallback;
     }
 
+    public Boolean getFilterNotifyOff() {
+        return filterNotifyOff;
+    }
+
+    public void setFilterNotifyOff(Boolean filterNotifyOff) {
+        this.filterNotifyOff = filterNotifyOff;
+    }
+
+    public Integer getActiveDays() {
+        return activeDays;
+    }
+
+    public void setActiveDays(Integer activeDays) {
+        this.activeDays = activeDays;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -72,7 +100,9 @@ public class Settings {
                 ", strategy=" + strategy +
                 ", speed=" + speed +
                 ", scheduleTime=" + scheduleTime +
-                ", customCallback=" + customCallback +
+                ", customCallback='" + customCallback + '\'' +
+                ", filterNotifyOff=" + filterNotifyOff +
+                ", activeDays=" + activeDays +
                 '}';
     }
 }
