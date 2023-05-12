@@ -22,7 +22,7 @@
     <dependency>
         <groupId>com.getui.push</groupId>
     <artifactId>restful-sdk</artifactId>
-    <version>1.0.0.11</version>
+    <version>1.0.0.12</version>
 </dependency>
 ```
 
