@@ -21,7 +21,7 @@ public class DefaultJson implements IJson {
     public static Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        gsonBuilder.registerTypeAdapter(Map.class, new JsonDeserializer<StatisticDTO>() {
+        gsonBuilder.registerTypeAdapter(StatisticDTO.class, new JsonDeserializer<StatisticDTO>() {
             @Override
             public StatisticDTO deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 StatisticDTO statisticDTO = new StatisticDTO();
