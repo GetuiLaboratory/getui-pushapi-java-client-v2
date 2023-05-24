@@ -37,6 +37,11 @@ public class Settings {
      */
     private Integer activeDays;
 
+    /**
+     * 厂商智能配额策略-是否需要兜底（离线消息到期时通过厂商通道下发），false表示不需要，true表示需要
+     */
+    private Boolean needBackup;
+
     public Integer getTtl() {
         return ttl;
     }
@@ -93,6 +98,14 @@ public class Settings {
         this.activeDays = activeDays;
     }
 
+    public Boolean getNeedBackup() {
+        return needBackup;
+    }
+
+    public void setNeedBackup(Boolean needBackup) {
+        this.needBackup = needBackup;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -103,6 +116,7 @@ public class Settings {
                 ", customCallback='" + customCallback + '\'' +
                 ", filterNotifyOff=" + filterNotifyOff +
                 ", activeDays=" + activeDays +
+                ", needBackup=" + needBackup +
                 '}';
     }
 }
