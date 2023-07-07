@@ -85,6 +85,20 @@ public class GTNotification {
     @SerializedName("thread_id")
     private String threadId;
 
+    /**
+     * 消息重弹次数，0代表不重弹，若要设置消息重弹则必须大于1，上限3次。
+     */
+    @SerializedName("redisplay_freq")
+    private Integer redisplayFreq;
+
+    /**
+     * 消息重弹间隔（单位小时），仅当重弹次数大于0时才生效，代表每次消息重弹之间的最小间隔。
+     * 由于重弹依赖SDK登录动作，因此实际的重弹间隔可能会大于设置的最小间隔。
+     * 0代表登录即弹，大于0即忽略在最小间隔内的登录重弹动作，上限为24小时
+     */
+    @SerializedName("redisplay_duration")
+    private Integer redisplayDuration;
+
     public String getTitle() {
         return title;
     }
@@ -221,6 +235,22 @@ public class GTNotification {
         this.threadId = threadId;
     }
 
+    public Integer getRedisplayFreq() {
+        return redisplayFreq;
+    }
+
+    public void setRedisplayFreq(Integer redisplayFreq) {
+        this.redisplayFreq = redisplayFreq;
+    }
+
+    public Integer getRedisplayDuration() {
+        return redisplayDuration;
+    }
+
+    public void setRedisplayDuration(Integer redisplayDuration) {
+        this.redisplayDuration = redisplayDuration;
+    }
+
     @Override
     public String toString() {
         return "GTNotification{" +
@@ -241,6 +271,8 @@ public class GTNotification {
                 ", ringName='" + ringName + '\'' +
                 ", badgeAddNum='" + badgeAddNum + '\'' +
                 ", threadId='" + threadId + '\'' +
+                ", redisplayFreq=" + redisplayFreq +
+                ", redisplayDuration=" + redisplayDuration +
                 '}';
     }
 }
