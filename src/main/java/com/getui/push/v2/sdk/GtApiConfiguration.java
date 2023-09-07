@@ -3,6 +3,10 @@ package com.getui.push.v2.sdk;
 import com.getui.push.v2.sdk.common.Assert;
 import org.apache.http.client.config.RequestConfig;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 应用相关配置信息
  * create by getui on 2020/6/4
@@ -32,7 +36,19 @@ public class GtApiConfiguration {
     /**
      * 是否开启最稳定域名检测，默认开启
      */
-    private boolean openAnalyseStableDomainSwitch = true;
+    public final static String ANALYSE_STABLE_DOMAIN_SWITCH_KEY = "gt.analyse.stable.domain.switch";
+
+    /**
+     * 个推顶级域名列表，英文逗号分割
+     */
+    public final static String GT_TOP_LEVEL_DOMAIN_LIST_KEY = "gt.top.level.domain.list";
+
+    /**
+     * 个推顶级域名列表的默认值
+     */
+    private final static String DEFAULT_GT_TOP_LEVEL_DOMAIN_LIST = "getui.com,getui.cn";
+
+    private Set<String> gtTopLevelDomainList;
 
     /**
      * 检测最稳定域名时间间隔，默认2分钟检测一次
@@ -41,7 +57,7 @@ public class GtApiConfiguration {
 
     /**
      * 如果遇到域名请求地址不断变化或需要排查网络耗时等问题，可以开启此接口（方法）功能后，联系个推技术支持
-     * 健康度检查动态开关，true表示开启，否则关闭，不设置则取 {@link #openAnalyseStableDomainSwitch}
+     * 健康度检查动态开关，true表示开启，否则关闭，不设置则取 {@link #ANALYSE_STABLE_DOMAIN_SWITCH_KEY}
      */
     public final static String CHECK_HEALTH_DATA_SWITCH_KEY = "gt_healthy_switch";
     /**
@@ -136,12 +152,36 @@ public class GtApiConfiguration {
         return domain;
     }
 
+    private boolean notGtDomain() {
+        for (String gtDomain : getGtTopLevelDomainList()) {
+            if (domain.contains(gtDomain)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public Set<String> getGtTopLevelDomainList() {
+        if (gtTopLevelDomainList == null) {
+            gtTopLevelDomainList = new HashSet<String>(Arrays.asList(System.getProperty(GT_TOP_LEVEL_DOMAIN_LIST_KEY, DEFAULT_GT_TOP_LEVEL_DOMAIN_LIST).split(",")));
+        }
+        return gtTopLevelDomainList;
+    }
+
+    public void setGtTopLevelDomainList(String list) {
+        System.setProperty(GT_TOP_LEVEL_DOMAIN_LIST_KEY, list);
+    }
+
     public boolean isOpenAnalyseStableDomainSwitch() {
-        return openAnalyseStableDomainSwitch;
+        if (notGtDomain()) {
+            return false;
+        }
+        return Boolean.parseBoolean(System.getProperty(ANALYSE_STABLE_DOMAIN_SWITCH_KEY, "true"));
     }
 
     public void setOpenAnalyseStableDomainSwitch(boolean openAnalyseStableDomainSwitch) {
-        this.openAnalyseStableDomainSwitch = openAnalyseStableDomainSwitch;
+        System.setProperty(ANALYSE_STABLE_DOMAIN_SWITCH_KEY, String.valueOf(openAnalyseStableDomainSwitch));
     }
 
     public long getAnalyseStableDomainInterval() {
