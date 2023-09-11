@@ -99,6 +99,11 @@ public class GTNotification {
     @SerializedName("redisplay_duration")
     private Integer redisplayDuration;
 
+    /**
+     * 消息分类
+     */
+    private String category;
+
     public String getTitle() {
         return title;
     }
@@ -251,6 +256,14 @@ public class GTNotification {
         this.redisplayDuration = redisplayDuration;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "GTNotification{" +
@@ -273,6 +286,7 @@ public class GTNotification {
                 ", threadId='" + threadId + '\'' +
                 ", redisplayFreq=" + redisplayFreq +
                 ", redisplayDuration=" + redisplayDuration +
+                ", category='" + category + '\'' +
                 '}';
     }
 }
