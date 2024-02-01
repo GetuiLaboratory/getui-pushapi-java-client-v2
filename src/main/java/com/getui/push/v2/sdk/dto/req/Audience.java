@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class Audience {
     private List<String> cid;
+    private String aliasType;
     private List<String> alias;
     private String fastCustomTag;
     private List<Condition> tag;
@@ -40,6 +41,14 @@ public class Audience {
 
     public void setCid(List<String> cid) {
         this.cid = cid;
+    }
+
+    public String getAliasType() {
+        return aliasType;
+    }
+
+    public void setAliasType(String aliasType) {
+        this.aliasType = aliasType;
     }
 
     public List<String> getAlias() {
@@ -78,6 +87,7 @@ public class Audience {
     public String toString() {
         return "Audience{" +
                 "cid=" + cid +
+                ", aliasType='" + aliasType + '\'' +
                 ", alias=" + alias +
                 ", fastCustomTag='" + fastCustomTag + '\'' +
                 ", tag=" + tag +

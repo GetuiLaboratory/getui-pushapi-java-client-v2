@@ -6,6 +6,7 @@ import com.getui.push.v2.sdk.anno.method.GtPost;
 import com.getui.push.v2.sdk.anno.method.GtPut;
 import com.getui.push.v2.sdk.anno.param.GtBodyParam;
 import com.getui.push.v2.sdk.anno.param.GtPathParam;
+import com.getui.push.v2.sdk.anno.param.GtQueryParam;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.req.*;
 import com.getui.push.v2.sdk.dto.res.AliasResDTO;
@@ -42,6 +43,16 @@ public interface UserApi {
     ApiResult<AliasResDTO> queryAliasByCid(@GtPathParam String cid);
 
     /**
+     * 根据cid查询指定别名类型下的别名
+     *
+     * @param cid
+     * @param aliasType 别名类型
+     * @return
+     */
+    @GtGet(uri = "/user/alias/cid/")
+    ApiResult<AliasResDTO> queryAliasByCid(@GtPathParam String cid, @GtQueryParam(name = "alias_type") String aliasType);
+
+    /**
      * 根据别名查询cid
      *
      * @param alias
@@ -49,6 +60,16 @@ public interface UserApi {
      */
     @GtGet(uri = "/user/cid/alias/")
     ApiResult<QueryCidResDTO> queryCidByAlias(@GtPathParam String alias);
+
+    /**
+     * 根据别名类型与别名查询cid
+     *
+     * @param alias
+     * @param aliasType
+     * @return
+     */
+    @GtGet(uri = "/user/cid/alias/")
+    ApiResult<QueryCidResDTO> queryCidByAlias(@GtPathParam String alias, @GtQueryParam(name = "alias_type") String aliasType);
 
     /**
      * 批量解绑别名
@@ -77,6 +98,16 @@ public interface UserApi {
      */
     @GtPost(uri = "/user/custom_tag/cid/")
     ApiResult<Void> userBindTags(@GtPathParam String cid, @GtBodyParam TagDTO tagDTO);
+
+    /**
+     * 解绑指定别名类型下的别名
+     *
+     * @param alias
+     * @param aliasType
+     * @return
+     */
+    @GtDelete(uri = "/user/alias")
+    ApiResult<Void> unbindAllAlias(@GtPathParam String alias, @GtQueryParam(name = "alias_type") String aliasType);
 
     /**
      * 一批用户绑定一个标签

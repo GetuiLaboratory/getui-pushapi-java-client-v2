@@ -24,6 +24,19 @@ public interface CommonEnum {
         }
     }
 
+    enum HarmonyClickTypeEnum {
+        TYPE_WANT("want", "打开应用内特定页面"),
+        TYPE_STARTAPP("startapp", "打开应用首页")
+        ;
+        public final String type;
+        public final String msg;
+
+        HarmonyClickTypeEnum(String type, String msg) {
+            this.type = type;
+            this.msg = msg;
+        }
+    }
+
     /**
      * 通知渠道重要性
      */

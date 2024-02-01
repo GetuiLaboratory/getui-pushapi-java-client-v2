@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class CidAliasListDTO implements BaseReqDTO {
 
+    private String aliasType;
+
     private List<CidAlias> dataList;
 
     public CidAliasListDTO add(CidAlias cidAlias) {
@@ -60,6 +62,14 @@ public class CidAliasListDTO implements BaseReqDTO {
         }
     }
 
+    public String getAliasType() {
+        return aliasType;
+    }
+
+    public void setAliasType(String aliasType) {
+        this.aliasType = aliasType;
+    }
+
     public List<CidAlias> getDataList() {
         return dataList;
     }
@@ -68,10 +78,12 @@ public class CidAliasListDTO implements BaseReqDTO {
         this.dataList = dataList;
     }
 
+
     @Override
     public String toString() {
         return "CidAliasListDTO{" +
-                "dataList=" + dataList +
+                "aliasType='" + aliasType + '\'' +
+                ", dataList=" + dataList +
                 '}';
     }
 }

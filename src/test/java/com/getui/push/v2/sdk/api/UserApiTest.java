@@ -2,7 +2,6 @@ package com.getui.push.v2.sdk.api;
 
 import com.getui.push.v2.sdk.ApiHelper;
 import com.getui.push.v2.sdk.GtApiConfiguration;
-import com.getui.push.v2.sdk.GtHttpProxyConfig;
 import com.getui.push.v2.sdk.api.env.ApiContext;
 import com.getui.push.v2.sdk.api.util.Utils;
 import com.getui.push.v2.sdk.common.ApiResult;
@@ -34,7 +33,7 @@ public class UserApiTest {
         apiConfiguration.setOpenAnalyseStableDomainSwitch(true);
         apiConfiguration.setSoTimeout(5000);
         apiConfiguration.setConnectTimeout(5000);
-        apiConfiguration.setProxyConfig(new GtHttpProxyConfig("proxy_ip", 80, "proxy_username", "proxy_password"));
+        // apiConfiguration.setProxyConfig(new GtHttpProxyConfig("proxy_ip", 80, "proxy_username", "proxy_password"));
 
         cid = apiContext.cid;
 
@@ -96,8 +95,22 @@ public class UserApiTest {
     }
 
     @Test
+    public void queryAliasByCidAndType() {
+        QueryAliasDTO queryAliasDTO = new QueryAliasDTO();
+        queryAliasDTO.setCid(cid);
+        ApiResult<AliasResDTO> apiResult = userApi.queryAliasByCid(queryAliasDTO.getCid(),"t-2");
+        System.out.println(apiResult);
+    }
+
+    @Test
     public void queryCidByAlias() {
         ApiResult<QueryCidResDTO> apiResult = userApi.queryCidByAlias("alias");
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void queryCidByAliasAndType() {
+        ApiResult<QueryCidResDTO> apiResult = userApi.queryCidByAlias("2221","t-1");
         System.out.println(apiResult);
     }
 
@@ -112,6 +125,12 @@ public class UserApiTest {
     @Test
     public void unboundAllAlias() {
         ApiResult<Void> apiResult = userApi.unbindAllAlias("alias");
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void unboundAllAliasWithType() {
+        ApiResult<Void> apiResult = userApi.unbindAllAlias("2221","t-1");
         System.out.println(apiResult);
     }
 
