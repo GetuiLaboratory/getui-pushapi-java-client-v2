@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.0.0.17
+
+### update
+
+* 鸿蒙在线支持传参want
+
 ## 1.0.0.16
 
 ### update
