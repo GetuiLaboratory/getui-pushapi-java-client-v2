@@ -49,6 +49,11 @@ public class GTNotification {
      */
     private String intent;
     /**
+     * 鸿蒙平台点击动作 <br><br/>
+     * 示例：{"deviceId":"","bundleName":"com.getui.push","abilityName":"TestAbility","uri":"https://www.test.com:8080/push/test","action":"com.test.action","parameters":{"name":"Getui","age":12}}
+     */
+    private String want;
+    /**
      * 点击通知打开链接，长度 ≤ 1024
      */
     private String url;
@@ -192,6 +197,14 @@ public class GTNotification {
         this.intent = intent;
     }
 
+    public String getWant() {
+        return want;
+    }
+
+    public void setWant(String want) {
+        this.want = want;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -278,6 +291,7 @@ public class GTNotification {
                 ", channelLevel='" + channelLevel + '\'' +
                 ", clickType='" + clickType + '\'' +
                 ", intent='" + intent + '\'' +
+                ", want='" + want + '\'' +
                 ", url='" + url + '\'' +
                 ", payload='" + payload + '\'' +
                 ", notifyId='" + notifyId + '\'' +
