@@ -58,7 +58,7 @@ public interface CommonEnum {
 
         @Override
         public Integer get() {
-            return null;
+            return level;
         }
 
         ChannelLevelEnum(int level, String msg) {

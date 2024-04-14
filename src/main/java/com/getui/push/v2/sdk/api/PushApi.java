@@ -22,13 +22,21 @@ import java.util.Map;
  */
 public interface PushApi {
 
+    String singleCidUri = "/push/single/cid";
+    String singleAliasUri = "/push/single/alias";
+    String singleBatchCidUri = "/push/single/batch/cid";
+    String singleBatchAliasUri = "/push/single/batch/alias";
+    String pushListMessageUri = "/push/list/message";
+    String pushListCidUri = "/push/list/cid";
+    String pushListAliasUri = "/push/list/alias";
+
     /**
      * 根据cid推送
      *
      * @param pushDTO
      * @return k: cid, v: status
      */
-    @GtPost(uri = "/push/single/cid")
+    @GtPost(uri = singleCidUri)
     ApiResult<Map<String, Map<String, String>>> pushToSingleByCid(@GtBodyParam PushDTO<Audience> pushDTO);
 
     /**
@@ -37,7 +45,7 @@ public interface PushApi {
      * @param pushDTO
      * @return
      */
-    @GtPost(uri = "/push/single/alias")
+    @GtPost(uri = singleAliasUri)
     ApiResult<Map<String, Map<String, String>>> pushToSingleByAlias(@GtBodyParam PushDTO<Audience> pushDTO);
 
     /**
@@ -46,7 +54,7 @@ public interface PushApi {
      * @param pushBatchDTO
      * @return
      */
-    @GtPost(uri = "/push/single/batch/cid")
+    @GtPost(uri = singleBatchCidUri)
     ApiResult<Map<String, Map<String, String>>> pushBatchByCid(@GtBodyParam PushBatchDTO pushBatchDTO);
 
     /**
@@ -55,7 +63,7 @@ public interface PushApi {
      * @param pushBatchDTO
      * @return
      */
-    @GtPost(uri = "/push/single/batch/alias")
+    @GtPost(uri = singleBatchAliasUri)
     ApiResult<Map<String, Map<String, String>>> pushBatchByAlias(@GtBodyParam PushBatchDTO pushBatchDTO);
 
     /**
@@ -64,7 +72,7 @@ public interface PushApi {
      * @param pushDTO
      * @return
      */
-    @GtPost(uri = "/push/list/message")
+    @GtPost(uri = pushListMessageUri)
     ApiResult<TaskIdDTO> createMsg(@GtBodyParam PushDTO pushDTO);
 
     /**
@@ -73,7 +81,7 @@ public interface PushApi {
      * @param audienceDTO
      * @return
      */
-    @GtPost(uri = "/push/list/cid")
+    @GtPost(uri = pushListCidUri)
     ApiResult<Map<String, Map<String, String>>> pushListByCid(@GtBodyParam AudienceDTO audienceDTO);
 
     /**
@@ -82,7 +90,7 @@ public interface PushApi {
      * @param audienceDTO
      * @return
      */
-    @GtPost(uri = "/push/list/alias")
+    @GtPost(uri = pushListAliasUri)
     ApiResult<Map<String, Map<String, String>>> pushListByAlias(@GtBodyParam AudienceDTO audienceDTO);
 
     /**

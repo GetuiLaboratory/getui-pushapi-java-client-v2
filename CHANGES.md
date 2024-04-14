@@ -1,5 +1,15 @@
 # Release Notes
 
+## 1.0.1.0
+
+### update
+
+* 支持jdk版本 1.8及以上版本，不再支持jdk1.6
+* 重试支持切换域名
+* 支持设置接口维度的超时时间
+* 修改默认的连接超时时间，60s改为10s
+* 内部异常，会拼接到apiResult的msg上，eg. 原来接口超时返回`{"code":5000, "message":"http error::5000"}`，修改后返回`{"code":5000, "message":"http error:Read timed out::5000"}
+
 ## 1.0.0.17
 
 ### update
