@@ -1,11 +1,19 @@
 package com.getui.push.v2.sdk;
 
+import com.getui.push.v2.sdk.anno.method.GtDelete;
+import com.getui.push.v2.sdk.anno.method.GtGet;
+import com.getui.push.v2.sdk.anno.method.GtPost;
+import com.getui.push.v2.sdk.anno.method.GtPut;
+import com.getui.push.v2.sdk.api.PushApi;
 import com.getui.push.v2.sdk.common.Assert;
+import com.getui.push.v2.sdk.core.Configs;
 import org.apache.http.client.config.RequestConfig;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 应用相关配置信息
@@ -28,7 +36,7 @@ public class GtApiConfiguration {
      */
     private String masterSecret;
     /**
-     * 接口调用前缀, 可不包含{@link #appId}
+     * 接口调用前缀, 不带{@link #appId}
      * eg. https://restapi.getui.com/v2
      */
     private String domain = "https://restapi.getui.com/v2";
@@ -70,20 +78,23 @@ public class GtApiConfiguration {
      *
      * @see RequestConfig#getSocketTimeout()
      */
+    private final String SOCKET_TIMEOUT_KEY = "gt.socket.timeout";
     private int soTimeout = 30000;
     /**
      * http连接超时时间，单位ms
      *
      * @see RequestConfig#getConnectTimeout()
      */
-    private int connectTimeout = 60000;
+    private final String CONNECT_TIMEOUT_KEY = "gt.connect.timeout";
+    private int connectTimeout = 10000;
     /**
      * 从连接池中获取http连接的超时时间，单位ms
      */
     private int connectionRequestTimeout = 0;
     /**
-     * http请求失败，最大尝试次数
+     * http请求失败，最大尝试次数，默认重试1次，0表示不重试
      */
+    private final String MAX_HTTP_TRY_TIME_KEY = "gt.max.http.try.times";
     private int maxHttpTryTime = 1;
     /**
      * 保持长连接的时长，最大{@link #MAX_KEEP_ALIVE_SECONDS}
@@ -100,6 +111,33 @@ public class GtApiConfiguration {
      * http请求设置代理，默认不设置
      */
     private GtHttpProxyConfig proxyConfig;
+
+    /**
+     * 存储uri和socketTimeout，支持设置接口维度socketTimeout
+     */
+    private Map<String, Integer> uriToSocketTimeoutMap = new ConcurrentHashMap<>();
+    /**
+     * 最大失败次数，单位时间内达到此阈值，切换域名，默认10次
+     */
+    public final static String MAX_FAILED_NUM_KEY = "gt.max.failed.num";
+    private int maxFailedNum = 10;
+
+    /**
+     * 连续失败次数达到阈值，切换域名，默认3
+     */
+    public final static String CONTINUOUS_FAILED_NUM_KEY = "gt.continuous.failed.num";
+    private int continuousFailedNum = Configs.MAX_FAIL_CONTINUOUSLY;
+
+    /**
+     * 重置最大失败次数的时间间隔，默认3s
+     */
+    public final static String CHECK_MAX_FAILED_NUM_INTERVAL_KEY = "gt.check.max.failed.num.interval";
+    private long checkMaxFailedNumInterval = 3000;
+    /**
+     * 域名检测的超时时间，单位ms，默认100ms
+     */
+    public final static String HTTP_CHECK_TIMEOUT_KEY = "gt.http.check.timeout";
+    private int httpCheckTimeout = 100;
 
     /**
      * @param domain 接口调用前缀, 可不含{@link #appId}
@@ -209,7 +247,7 @@ public class GtApiConfiguration {
     }
 
     public int getSoTimeout() {
-        return soTimeout;
+        return Integer.getInteger(SOCKET_TIMEOUT_KEY, soTimeout);
     }
 
     public void setSoTimeout(int soTimeout) {
@@ -217,7 +255,7 @@ public class GtApiConfiguration {
     }
 
     public int getConnectTimeout() {
-        return connectTimeout;
+        return Integer.getInteger(CONNECT_TIMEOUT_KEY, connectTimeout);
     }
 
     public void setConnectTimeout(int connectTimeout) {
@@ -233,7 +271,7 @@ public class GtApiConfiguration {
     }
 
     public int getMaxHttpTryTime() {
-        return maxHttpTryTime;
+        return Integer.getInteger(MAX_HTTP_TRY_TIME_KEY, maxHttpTryTime);
     }
 
     public void setMaxHttpTryTime(int maxHttpTryTime) {
@@ -279,6 +317,38 @@ public class GtApiConfiguration {
 
     public void setProxyConfig(GtHttpProxyConfig proxyConfig) {
         this.proxyConfig = proxyConfig;
+    }
+
+    public int getContinuousFailedNum() {
+        return Integer.getInteger(CONTINUOUS_FAILED_NUM_KEY, continuousFailedNum);
+    }
+
+    public void setContinuousFailedNum(int continuousFailedNum) {
+        this.continuousFailedNum = continuousFailedNum;
+    }
+
+    public int getMaxFailedNum() {
+        return Integer.getInteger(MAX_FAILED_NUM_KEY, maxFailedNum);
+    }
+
+    public void setMaxFailedNum(int maxFailedNum) {
+        this.maxFailedNum = maxFailedNum;
+    }
+
+    public long getCheckMaxFailedNumInterval() {
+        return Long.getLong(CHECK_MAX_FAILED_NUM_INTERVAL_KEY, checkMaxFailedNumInterval);
+    }
+
+    public void setCheckMaxFailedNumInterval(long checkMaxFailedNumInterval) {
+        this.checkMaxFailedNumInterval = checkMaxFailedNumInterval;
+    }
+
+    public int getHttpCheckTimeout() {
+        return Integer.getInteger(HTTP_CHECK_TIMEOUT_KEY, httpCheckTimeout);
+    }
+
+    public void setHttpCheckTimeout(int httpCheckTimeout) {
+        this.httpCheckTimeout = httpCheckTimeout;
     }
 
     @Override
@@ -327,6 +397,32 @@ public class GtApiConfiguration {
     public String prefixOfKey() {
         check();
         return String.format("%s|%s", this.getAppId(), this.getAppKey());
+    }
+
+    /**
+     * 针对接口设置超时时间，可根据监控修改合理值
+     *
+     * @param uri           {@link GtGet#uri()}, {@link GtPost#uri()}, {@link GtDelete#uri()}, {@link GtPut#uri()}
+     * @param socketTimeout {@link RequestConfig#getSocketTimeout()}，单位: ms
+     */
+    public void setCustomSocketTimeout(String uri, int socketTimeout) {
+        this.uriToSocketTimeoutMap.put(uri, socketTimeout);
+    }
+
+    public void resetConnectAndSocketTimeout() {
+        setConnectTimeout(3000);
+        setCustomSocketTimeout(PushApi.singleCidUri, 3000);
+        setCustomSocketTimeout(PushApi.singleAliasUri, 3000);
+        setCustomSocketTimeout(PushApi.singleBatchCidUri, 6000);
+        setCustomSocketTimeout(PushApi.singleBatchAliasUri, 6000);
+        setCustomSocketTimeout(PushApi.singleBatchAliasUri, 6000);
+        setCustomSocketTimeout(PushApi.pushListMessageUri, 3000);
+        setCustomSocketTimeout(PushApi.pushListCidUri, 6000);
+        setCustomSocketTimeout(PushApi.pushListAliasUri, 6000);
+    }
+
+    public int getCustomSocketTimeout(String uri) {
+        return Integer.getInteger(uri, this.uriToSocketTimeoutMap.getOrDefault(uri, 0));
     }
 
 }

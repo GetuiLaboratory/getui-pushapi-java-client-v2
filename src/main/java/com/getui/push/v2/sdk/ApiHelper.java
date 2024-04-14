@@ -7,6 +7,7 @@ import com.getui.push.v2.sdk.common.Assert;
 import com.getui.push.v2.sdk.core.DefaultJson;
 import com.getui.push.v2.sdk.core.client.DefaultApiClient;
 import com.getui.push.v2.sdk.core.factory.GtApiProxyFactory;
+import com.getui.push.v2.sdk.core.handler.GtInterceptor;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +38,14 @@ public class ApiHelper {
      * @return
      */
     public static ApiHelper build(GtApiConfiguration configuration, IJson json) {
+        return build(configuration, json, null);
+    }
+
+    /**
+     * @param configuration 配置信息类
+     * @return
+     */
+    public static ApiHelper build(GtApiConfiguration configuration, IJson json, GtInterceptor interceptor) {
         Assert.notNull(configuration, "configuration");
         configuration.check();
         String key = configuration.keyOfCache();
@@ -53,6 +62,9 @@ public class ApiHelper {
                 return apiHelper;
             }
             final DefaultApiClient defaultApiClient = DefaultApiClient.build(configuration, json);
+            if (interceptor != null) {
+                defaultApiClient.addGtInterceptor(interceptor);
+            }
             GtApiProxyFactory factory = GtApiProxyFactory.build(defaultApiClient);
             final AuthApi authApi = factory.createProxy(AuthApi.class);
             defaultApiClient.setAuthApiAndAuth(authApi);
