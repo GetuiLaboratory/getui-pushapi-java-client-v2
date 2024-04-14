@@ -7,7 +7,7 @@
 
 
 ## 环境要求
-1. 需要配合`JDK 1.6`或其以上版本。
+1. 需要配合`JDK 1.8`或其以上版本。
 
 2. 使用`个推PUSH SDK`前，您需要先前往[个推开发者中心](https://dev.getui.com) 完成开发者接入的一些准备工作，创建应用。详细见[操作步骤](https://docs.getui.com/getui/start/devcenter/#1)
 
@@ -22,7 +22,7 @@
 <dependency>
     <groupId>com.getui.push</groupId>
     <artifactId>restful-sdk</artifactId>
-    <version>1.0.0.17</version>
+    <version>1.0.1.0</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ public class TestCreatApi {
         apiConfiguration.setAppId("xxx");
         apiConfiguration.setAppKey("xxx");
         apiConfiguration.setMasterSecret("xxx");
-        // 接口调用前缀，请查看文档: 接口调用规范 -> 接口前缀, 可不填写appId
+        // 接口调用前缀，请查看文档: 接口调用规范 -> 接口前缀
         apiConfiguration.setDomain("https://restapi.getui.com/v2/");
         // 实例化ApiHelper对象，用于创建接口对象
         ApiHelper apiHelper = ApiHelper.build(apiConfiguration);
@@ -55,6 +55,24 @@ public class TestCreatApi {
     }
 }
 ```
+
+###### 已支持的配置项说明
+| 通过代码修改 | 启动项 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| gtApiConfiguration.setSoTimeout(30000); | \-Dgt.socket.timeout=30000 | 30000 | 修改全局的套接字读超时时间，默认30s，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.singleCidUri, 3000); | \-D/push/single/cid= | 默认为gt.socket.timeout的值 | cid单推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.singleAliasUri, 3000); | \-D/push/single/alias= | 默认为gt.socket.timeout的值 | 别名单推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.singleBatchCidUri, 6000); | \-D/push/single/batch/cid= | 默认为gt.socket.timeout的值 | cid批量单推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.singleBatchAliasUri, 6000); | \-D/push/single/batch/alias= | 默认为gt.socket.timeout的值 | 别名批量单推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.pushListMessageUri, 3000); | \-D/push/list/message= | 默认为gt.socket.timeout的值 | 保存列表推消息体接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.pushListCidUri, 6000); | \-D/push/list/cid= | 默认为gt.socket.timeout的值 | cid列表推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setCustomSocketTimeout(PushApi.pushListAliasUri, 6000); | \-D/push/list/alias= | 默认为gt.socket.timeout的值 | 别名列表推接口设置套接字读取超时时间，单位ms |
+| gtApiConfiguration.setConnectTimeout(10000); | \-Dgt.connect.timeout=10000 | 10000 | 修改连接超时时间，默认10s，单位ms |
+| gtApiConfiguration.setMaxHttpTryTime(1); | \-Dgt.max.http.try.times=1 | 1 |设置重试次数<br>上述配置项设为1时，如果请求失败(超时或其他异常)，sdk内部会重试1次，重试可能造成消息重复，建议客户配合消息幂等使用，详见文档：[消息覆盖](https://docs.getui.com/getui/server/rest_v2/advanced/)<br>用户不接受重试的，可将此值改为0|
+| gtApiConfiguration.setOpenAnalyseStableDomainSwitch(true); | \-Dgt.analyse.stable.domain.switch=true | true | 是否开启稳定域名检测 |
+| gtApiConfiguration.setMaxFailedNum(10); | \-Dgt.max.failed.num=10 | 10 | 开启稳定域名检测时生效，单位时间内失败总次数阈值，达到阈值会切换域名 |
+| gtApiConfiguration.setCheckMaxFailedNumInterval(3000); | \-Dgt.check.max.failed.num.interval=3000 | 3000 | 开启稳定域名检测时生效，修改上述阈值的单位时间，单位ms |
+| gtApiConfiguration.setContinuousFailedNum(3); | \-Dgt.continuous.failed.num=3 | 3 | 开启稳定域名检测时生效，连续失败次数达到阈值会切换域名 |
 
 ##### 使用示例：**推送API**_根据cid进行单推
 
@@ -176,7 +194,7 @@ public class TestUserApi {
 ### 设置代理
 > 当需要使用代理进行http访问时，可以参考如下设置
 
-```java
+```
         GtApiConfiguration apiConfiguration = new GtApiConfiguration();
         //设置代理对象，参数依次为host、端口、鉴权账户、鉴权密码。其中鉴权账户密码可选
         GtHttpProxyConfig proxyConfig = new GtHttpProxyConfig("xxx",xxx,"xxx","xxx");
