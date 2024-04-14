@@ -61,4 +61,21 @@ public final class Utils {
         return true;
     }
 
+    static final String v2UrlPrefix = "/v2";
+
+    /**
+     * 对于v2的接口，一定存在/v2前缀
+     *
+     * @param url
+     * @return
+     */
+    public static String v2UrlToHost(String url) {
+        int v2Index = url.indexOf(v2UrlPrefix);
+        if (v2Index > 0) {
+            return url.substring(0, v2Index);
+        } else {
+            return url;
+        }
+    }
+
 }

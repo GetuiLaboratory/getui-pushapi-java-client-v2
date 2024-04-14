@@ -56,7 +56,7 @@ public class DefaultApiClient {
     /**
      * 鉴权token数据
      */
-    private TokenDTO token;
+    private volatile TokenDTO token;
 
     final String CONTENT_TYPE = "application/json";
 
@@ -78,7 +78,7 @@ public class DefaultApiClient {
     /**
      * 是否关闭
      */
-    private boolean closed = false;
+    private volatile boolean closed = false;
 
     private DefaultGtInterceptor defaultGtInterceptor;
 
@@ -144,6 +144,7 @@ public class DefaultApiClient {
             client = new DefaultApiClient(apiConfiguration, json);
             final String fullUrl = client.genFullUrl(Config.AUTH_URI, null, null);
             AuthDTO authDTO = AuthDTO.build(apiConfiguration.getAppKey(), apiConfiguration.getMasterSecret());
+            // 初始化，不考虑域名切换
             String result = client.httpManager.syncHttps(fullUrl, "POST", null, json.toJson(authDTO), client.CONTENT_TYPE);
             ApiResult<TokenDTO> apiResult = json.fromJson(result, new TypeReference<ApiResult<TokenDTO>>() {
             }.getType());
@@ -252,6 +253,7 @@ public class DefaultApiClient {
         // 数据上报
         try {
             final String fullUrl = genFullUrl("/log/upload", null, null);
+            // 不考虑域名切换
             final String result = httpManager.syncHttps(fullUrl, "POST", header, buildSdkHealthData(stateWrapper), this.CONTENT_TYPE);
             log.debug("upload data. result: {}", result);
         } catch (Exception e) {
@@ -303,11 +305,14 @@ public class DefaultApiClient {
     public ApiResult<?> execute(GtApiProxyFactory.ApiParam apiParam) {
         Assert.notNull(authApi, "authApi");
         final TokenDTO token = this.token;
-        ApiResult<?> apiResult = doExecute(apiParam, token);
+        Map<String, Object> header = new HashMap<>(8);
+        // 处理header
+        handleHeader(header);
+        ApiResult<?> apiResult = doExecute(apiParam, token, header);
         // token失效，刷新token后重试
         if (apiResult.getCode() == 10001) {
             refreshTokenAndGet(token);
-            return doExecute(apiParam, this.token);
+            return doExecute(apiParam, this.token, header);
         }
         // 天上域名变了
         else if (apiResult.getCode() == 301) {
@@ -315,7 +320,10 @@ public class DefaultApiClient {
             hostManager.handleDomain(json.fromJson(json.toJson(apiResult.getData()), RasDomainBO.class));
             // 触发域名分析
             analyseDomainQueue.offer("");
-            return doExecute(apiParam, token);
+            // 第二次请求移除稳定域名开关，防止连续301
+            header.remove(Configs.HEADER_OPEN_STABLE_DOMAIN);
+            header.remove(Configs.HEADER_DOMAIN_HASH_KEY);
+            return doExecute(apiParam, token, header);
         } else {
             return apiResult;
         }
@@ -325,13 +333,13 @@ public class DefaultApiClient {
      * 执行HTTP调用并解析返回值
      *
      * @param apiParam
+     * @param header
      * @return
      */
-    private ApiResult<?> doExecute(GtApiProxyFactory.ApiParam apiParam, TokenDTO token) {
-        Map<String, Object> header = new HashMap<String, Object>(4);
+    private ApiResult<?> doExecute(GtApiProxyFactory.ApiParam apiParam, TokenDTO token, Map<String, Object> header) {
         if (apiParam.getNeedToken()) {
             if (token == null) {
-                header.put("token", refreshTokenAndGet(token));
+                header.put("token", refreshTokenAndGet(null));
             } else {
                 header.put("token", token.getToken());
             }
@@ -341,18 +349,20 @@ public class DefaultApiClient {
             body = json.toJson(apiParam.getBody());
         }
         String result = null;
-        String fullUrl = genFullUrl(apiParam.getUri(), apiParam.getPathParams(), apiParam.getQueryParams());
+        String host = hostManager.getUsing();
+        String fullUrl = genFullUrl(host, apiParam.getUri(), apiParam.getPathParams(), apiParam.getQueryParams());
         try {
-            // 处理header
-            handleHeader(header);
             beforeExecute(apiParam, header, body);
-            result = httpManager.syncHttps(fullUrl, apiParam.getMethod(), header, body, CONTENT_TYPE);
+            // 天上的域名
+            List<String> customizedDomains = hostManager.getCustomizedDomains();
+            int socketTimeout = this.apiConfiguration.getCustomSocketTimeout(apiParam.getUri());
+            result = httpManager.syncHttps(fullUrl, customizedDomains, socketTimeout, apiParam.getMethod(), header, body, CONTENT_TYPE);
             postExecute(apiParam, header, body, result);
         } catch (ApiException e) {
-            handleException(apiParam, header, body, e);
+            handleException(host, apiParam, header, body, e);
             return ApiResult.fail(e.getMessage(), e.getCode());
         } finally {
-            afterDoExecute(apiParam, header, body, result);
+            afterDoExecute(host, apiParam, header, body, result);
         }
         if (result == null) {
             throw new ApiException(String.format("请求失败，返回值为空。url:%s, body: %s.", fullUrl, body));
@@ -414,34 +424,36 @@ public class DefaultApiClient {
     /**
      * 调用远程接口报错后调用此方法
      *
+     * @param host     当前使用的host
      * @param apiParam http请求的参数
      * @param header   http请求的header
      * @param body     http请求的body
      * @param e        http请求抛出的异常
      */
-    protected void handleException(GtApiProxyFactory.ApiParam apiParam, Map<String, Object> header, String body, ApiException e) {
+    protected void handleException(String host, GtApiProxyFactory.ApiParam apiParam, Map<String, Object> header, String body, ApiException e) {
         if (Utils.isEmpty(interceptorList)) {
             return;
         }
         for (GtInterceptor gtInterceptor : interceptorList) {
-            gtInterceptor.handleException(apiParam, header, body, e);
+            gtInterceptor.handleException(host, apiParam, header, body, e);
         }
     }
 
     /**
      * 调用接口后调用此方法
      *
+     * @param host     当前使用的host
      * @param apiParam http请求的参数
      * @param header   http请求的header
      * @param body     http请求的body
      * @param result   http请求的返回值
      */
-    protected void afterDoExecute(GtApiProxyFactory.ApiParam apiParam, Map<String, Object> header, String body, String result) {
+    protected void afterDoExecute(String host, GtApiProxyFactory.ApiParam apiParam, Map<String, Object> header, String body, String result) {
         if (Utils.isEmpty(interceptorList)) {
             return;
         }
         for (GtInterceptor gtInterceptor : interceptorList) {
-            gtInterceptor.afterCompletion(apiParam, header, body, result);
+            gtInterceptor.afterCompletion(host, apiParam, header, body, result);
         }
     }
 
@@ -480,7 +492,11 @@ public class DefaultApiClient {
      */
     private String genFullUrl(String uri, String pathParams, List<String> queryParams) {
         String host = hostManager.getUsing();
-        if (!host.endsWith("v2") && !host.endsWith("v2/")) {
+        return genFullUrl(host, uri, pathParams, queryParams);
+    }
+
+    private String genFullUrl(String host, String uri, String pathParams, List<String> queryParams) {
+        if (!host.endsWith("/v2") && !host.endsWith("/v2/")) {
             if (host.endsWith("/")) {
                 host = host + "v2/";
             } else {
@@ -544,5 +560,9 @@ public class DefaultApiClient {
             log.error("refresh token failed.", e);
             throw e;
         }
+    }
+
+    public void addGtInterceptor(GtInterceptor interceptor) {
+        this.interceptorList.add(interceptor);
     }
 }
