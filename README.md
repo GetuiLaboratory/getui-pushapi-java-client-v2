@@ -22,7 +22,7 @@
 <dependency>
     <groupId>com.getui.push</groupId>
     <artifactId>restful-sdk</artifactId>
-    <version>1.0.1.0</version>
+    <version>1.0.2.0</version>
 </dependency>
 ```
 
@@ -126,6 +126,18 @@ public class TestPushApi {
         alert.setTitle("ios title");
         alert.setBody("ios body");
         /*设置ios厂商参数结束，更多参数请查看文档或对象源码*/
+
+        /*配置鸿蒙厂商参数*/
+        HarmonyDTO harmonyDTO = new HarmonyDTO();
+        pushChannel.setHarmony(harmonyDTO);
+        HarmonyNotification harmonyNotification = new HarmonyNotification();
+        harmonyDTO.setNotification(harmonyNotification);
+        harmonyNotification.setTitle("鸿蒙厂商title");
+        harmonyNotification.setBody("鸿蒙厂商body");
+        harmonyNotification.setCategory("MARKETING");
+        harmonyNotification.setClickType("want");
+        harmonyNotification.setWant("{\"deviceId\":\"\",\"bundleName\":\"com.getui.push\",\"abilityName\":\"TestAbility\",\"uri\":\"https://www.test.com:8080/push/test\",\"action\":\"com.test.action\",\"parameters\":{\"name\":\"Getui\",\"age\":12}}");
+        /*配置鸿蒙厂商参数结束，更多参数请查看文档或对象源码*/
 
         /*设置接收人信息*/
         Audience audience = new Audience();

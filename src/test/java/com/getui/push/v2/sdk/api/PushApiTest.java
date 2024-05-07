@@ -11,6 +11,8 @@ import com.getui.push.v2.sdk.dto.req.message.PushDTO;
 import com.getui.push.v2.sdk.dto.req.message.PushMessage;
 import com.getui.push.v2.sdk.dto.req.message.android.AndroidDTO;
 import com.getui.push.v2.sdk.dto.req.message.android.GTNotification;
+import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyDTO;
+import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyNotification;
 import com.getui.push.v2.sdk.dto.res.ScheduleTaskDTO;
 import com.getui.push.v2.sdk.dto.req.message.android.ThirdNotification;
 import com.getui.push.v2.sdk.dto.req.message.android.Ups;
@@ -245,6 +247,16 @@ public class PushApiTest {
         iosDTO.setAps(aps);
         pushChannel.setIos(iosDTO);
         pushDTO.setPushChannel(pushChannel);
+
+        HarmonyDTO harmonyDTO = new HarmonyDTO();
+        pushChannel.setHarmony(harmonyDTO);
+        HarmonyNotification harmonyNotification = new HarmonyNotification();
+        harmonyDTO.setNotification(harmonyNotification);
+        harmonyNotification.setTitle("title-" + System.currentTimeMillis());
+        harmonyNotification.setBody("content");
+        harmonyNotification.setCategory("MARKETING");
+        harmonyNotification.setClickType("want");
+        harmonyNotification.setWant("{\"deviceId\":\"\",\"bundleName\":\"com.getui.push\",\"abilityName\":\"TestAbility\",\"uri\":\"https://www.test.com:8080/push/test\",\"action\":\"com.test.action\",\"parameters\":{\"name\":\"Getui\",\"age\":12}}");
 
         return pushDTO;
     }

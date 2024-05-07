@@ -25,19 +25,11 @@ public class HarmonyNotification {
      */
     @SerializedName("click_type")
     private String clickType;
-
     /**
-     * click_type为want时，action和uri必须填一个，点击通知打开应用特定页面
+     * 鸿蒙平台点击动作 <br><br/>
+     * 示例：{"deviceId":"","bundleName":"com.getui.push","abilityName":"TestAbility","uri":"https://www.test.com:8080/push/test","action":"com.test.action","parameters":{"name":"Getui","age":12}}
      */
-    private String action;
-    /**
-     * click_type为want时，action和uri必须填一个，点击通知打开应用特定页面
-     */
-    private String uri;
-    /**
-     * 点击通知加附加消息，长度 ≤ 3072
-     */
-    private String payload;
+    private String want;
 
     public String getTitle() {
         return title;
@@ -71,28 +63,12 @@ public class HarmonyNotification {
         this.clickType = clickType;
     }
 
-    public String getAction() {
-        return action;
+    public String getWant() {
+        return want;
     }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setWant(String want) {
+        this.want = want;
     }
 
     @Override
@@ -102,9 +78,7 @@ public class HarmonyNotification {
                 ", body='" + body + '\'' +
                 ", category='" + category + '\'' +
                 ", clickType='" + clickType + '\'' +
-                ", action='" + action + '\'' +
-                ", uri='" + uri + '\'' +
-                ", payload='" + payload + '\'' +
+                ", want='" + want + '\'' +
                 '}';
     }
 }
