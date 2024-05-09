@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.0.2.0
+
+### update
+
+* 鸿蒙离线支持传参want
+
 ## 1.0.1.0
 
 ### update
