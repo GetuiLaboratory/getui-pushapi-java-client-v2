@@ -79,11 +79,12 @@ public class DomainCheck {
         //是否所有域名不可用
         boolean allBad = true;
         //算出 域名-稳定分数
-        for (String key : detectMap.keySet()) {
-            if (detectMap.get(key) != 0) {
+        for (Map.Entry<String, Integer> entry : detectMap.entrySet()) {
+            if (entry.getValue() != 0) {
                 allBad = false;
             }
-            int score = (detectMap.get(key) * 100) / checkSize + domainToGapMap.get(key);
+            String key = entry.getKey();
+            int score = (entry.getValue() * 100) / checkSize + domainToGapMap.get(key);
             detectMap.put(key, score);
         }
         if (allBad) {
