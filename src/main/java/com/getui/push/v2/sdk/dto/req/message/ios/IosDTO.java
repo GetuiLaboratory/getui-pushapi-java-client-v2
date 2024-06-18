@@ -36,6 +36,10 @@ public class IosDTO extends HashMap<String, Object> {
      * 使用相同的apns-collapse-id可以覆盖之前的消息
      */
     private final String apnsCollapseId = "apns-collapse-id";
+    /**
+     * type选择liveactivity时，通过传入该参数选择指定推送的灵动岛
+     */
+    private final String laId = "laId";
 
     public IosDTO addMultimedia(Multimedia multimedia) {
         List<Multimedia> multimediaList = getMultimedia();
@@ -96,6 +100,14 @@ public class IosDTO extends HashMap<String, Object> {
 
     public void setApnsCollapseId(String apnsCollapseId) {
         super.put(this.apnsCollapseId, apnsCollapseId);
+    }
+
+    public String getLaId() {
+        return (String) super.get(this.laId);
+    }
+
+    public void setLaId(String laId) {
+        super.put(this.laId, laId);
     }
 
     @Override

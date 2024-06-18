@@ -1,6 +1,7 @@
 package com.getui.push.v2.sdk.dto.req.message.ios;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * create by getui on 2020/7/20
@@ -29,6 +30,26 @@ public class Aps extends HashMap<String, Object> {
      * ios的远程通知通过该属性对通知进行分组，仅支持iOS 12.0以上版本
      */
     private final String threadId = "thread-id";
+
+    /**
+     * type为liveactivity时必填，当前时间，秒级10位时间戳
+     */
+    private final String timestamp = "timestamp";
+
+    /**
+     * 灵动岛推送事件，update：更新灵动岛，end：关闭灵动岛
+     */
+    private final String event = "event";
+
+    /**
+     * 实时活动消失时间，秒级10位时间戳，event为end，且需要按时关闭实时活动时填写
+     */
+    private final String dismissalDate = "dismissal-date";
+
+    /**
+     * 灵动岛推送透传参数，Json内的kv由业务方自定义，客户APP拿到值后自行解析
+     */
+    private final String contentState = "content-state";
 
     public Alert getAlert() {
         return (Alert) super.get(this.alert);
@@ -68,5 +89,37 @@ public class Aps extends HashMap<String, Object> {
 
     public void setThreadId(String threadId) {
         super.put(this.threadId, threadId);
+    }
+
+    public Integer getTimestamp() {
+        return (Integer) super.get(this.timestamp);
+    }
+
+    public void setTimestamp(Integer timestamp) {
+        super.put(this.timestamp, timestamp);
+    }
+
+    public String getEvent() {
+        return (String) super.get(this.event);
+    }
+
+    public void setEvent(String event) {
+        super.put(this.event, event);
+    }
+
+    public Integer getDismissalDate() {
+        return (Integer) super.get(this.dismissalDate);
+    }
+
+    public void setDismissalDate(Integer dismissalDate) {
+        super.put(this.dismissalDate, dismissalDate);
+    }
+
+    public Map<String, Object> getContentState() {
+        return (Map<String, Object>) super.get(this.contentState);
+    }
+
+    public void setContentState(Map<String, Object> contentState) {
+        super.put(this.contentState, contentState);
     }
 }
