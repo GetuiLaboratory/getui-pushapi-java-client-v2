@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.0.3.0
+
+### update
+
+* 支持灵动岛
+
 ## 1.0.2.1
 
 ### update
