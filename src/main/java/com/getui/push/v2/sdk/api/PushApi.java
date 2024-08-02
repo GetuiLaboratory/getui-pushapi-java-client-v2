@@ -23,11 +23,13 @@ import java.util.Map;
 public interface PushApi {
 
     String singleCidUri = "/push/single/cid";
+    String singleCidByTagUri = "/push/single/cid_by_tag";
     String singleAliasUri = "/push/single/alias";
     String singleBatchCidUri = "/push/single/batch/cid";
     String singleBatchAliasUri = "/push/single/batch/alias";
     String pushListMessageUri = "/push/list/message";
     String pushListCidUri = "/push/list/cid";
+    String pushListCidByTagUri = "/push/list/cid_by_tag";
     String pushListAliasUri = "/push/list/alias";
 
     /**
@@ -38,6 +40,16 @@ public interface PushApi {
      */
     @GtPost(uri = singleCidUri)
     ApiResult<Map<String, Map<String, String>>> pushToSingleByCid(@GtBodyParam PushDTO<Audience> pushDTO);
+
+    /**
+     * 根据标签条件过滤后的cid推送（异步）
+     * 定制接口，需申请开通才可以使用
+     *
+     * @param pushDTO pushDTO
+     * @return ApiResult
+     */
+    @GtPost(uri = singleCidByTagUri)
+    ApiResult<Map<String, Map<String, String>>> pushToSingleCidByTag(@GtBodyParam PushDTO<Audience> pushDTO);
 
     /**
      * 根据别名推送
@@ -56,6 +68,16 @@ public interface PushApi {
      */
     @GtPost(uri = singleBatchCidUri)
     ApiResult<Map<String, Map<String, String>>> pushBatchByCid(@GtBodyParam PushBatchDTO pushBatchDTO);
+
+    /**
+     * 根据标签条件过滤后的cid批量推送（异步）
+     * 定制接口，需申请开通才可以使用
+     *
+     * @param audienceDTO audienceDTO
+     * @return ApiResult
+     */
+    @GtPost(uri = pushListCidByTagUri)
+    ApiResult<Map<String, Map<String, String>>> pushListCidByTag(@GtBodyParam AudienceDTO audienceDTO);
 
     /**
      * 根据别名批量推送

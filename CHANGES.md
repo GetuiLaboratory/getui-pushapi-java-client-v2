@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.0.4.0
+
+### update
+
+* 支持活跃行为过滤功能
+* 新增pushToSingleCidByTag和pushListCidByTag推送接口
+
 ## 1.0.3.0
 
 ### update
