@@ -7,6 +7,33 @@ package com.getui.push.v2.sdk.dto;
  */
 public interface CommonEnum {
 
+    enum ActivateFilterTypeEnum {
+        ACTIVE(1, "活跃"),
+        INACTIVE(-1, "非活跃");
+
+        public final int type;
+        public final String msg;
+
+        ActivateFilterTypeEnum(int type, String msg) {
+            this.type = type;
+            this.msg = msg;
+        }
+    }
+
+    enum CidByTagOpTypeEnum {
+        OR(0, "只要包含一个就推"),
+        AND(1, "全包含才推送, 默认值"),
+        NOT(2, "全不包含才推送");
+
+        public final int type;
+        public final String msg;
+
+        CidByTagOpTypeEnum(int type, String msg) {
+            this.type = type;
+            this.msg = msg;
+        }
+    }
+
     enum ClickTypeEnum {
         TYPE_INTENT("intent", "打开应用内特定页面"),
         TYPE_URL("url", "打开网页地址"),
@@ -26,8 +53,7 @@ public interface CommonEnum {
 
     enum HarmonyClickTypeEnum {
         TYPE_WANT("want", "打开应用内特定页面"),
-        TYPE_STARTAPP("startapp", "打开应用首页")
-        ;
+        TYPE_STARTAPP("startapp", "打开应用首页");
         public final String type;
         public final String msg;
 

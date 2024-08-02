@@ -11,14 +11,14 @@ import com.getui.push.v2.sdk.dto.req.message.PushDTO;
 import com.getui.push.v2.sdk.dto.req.message.PushMessage;
 import com.getui.push.v2.sdk.dto.req.message.android.AndroidDTO;
 import com.getui.push.v2.sdk.dto.req.message.android.GTNotification;
-import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyDTO;
-import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyNotification;
-import com.getui.push.v2.sdk.dto.res.ScheduleTaskDTO;
 import com.getui.push.v2.sdk.dto.req.message.android.ThirdNotification;
 import com.getui.push.v2.sdk.dto.req.message.android.Ups;
+import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyDTO;
+import com.getui.push.v2.sdk.dto.req.message.harmony.HarmonyNotification;
 import com.getui.push.v2.sdk.dto.req.message.ios.Alert;
 import com.getui.push.v2.sdk.dto.req.message.ios.Aps;
 import com.getui.push.v2.sdk.dto.req.message.ios.IosDTO;
+import com.getui.push.v2.sdk.dto.res.ScheduleTaskDTO;
 import com.getui.push.v2.sdk.dto.res.TaskIdDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,6 +63,17 @@ public class PushApiTest {
         } else {
             // failed
         }
+    }
+
+    @Test
+    public void pushToSingleCidByTag() {
+        PushDTO<Audience> pushDTO = pushDTO();
+        fullCidByTag(pushDTO);
+        pushDTO.getSettings().setActivateFilterDay(4);
+        pushDTO.getSettings().setActivateFilterType(CommonEnum.ActivateFilterTypeEnum.INACTIVE);
+        pushDTO.getSettings().setActivateFilterType(CommonEnum.ActivateFilterTypeEnum.ACTIVE);
+        ApiResult<Map<String, Map<String, String>>> apiResult = pushApi.pushToSingleCidByTag(pushDTO);
+        System.out.println(apiResult);
     }
 
     @Test
@@ -111,6 +122,33 @@ public class PushApiTest {
             audience.addCid(cid);
             audienceDTO.setAudience(audience);
             System.out.println(pushApi.pushListByCid(audienceDTO));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            return;
+        }
+    }
+
+    @Test
+    public void pushListCidByTag() {
+        while (true) {
+            String taskId = "taskId";
+            AudienceDTO audienceDTO = new AudienceDTO();
+            audienceDTO.setTaskid(taskId);
+            audienceDTO.setAsync(true);
+            audienceDTO.setNeedAliasDetail(false);
+            Audience audience = new Audience();
+
+            CidByTagDTO cidByTagDTO = new CidByTagDTO();
+            cidByTagDTO.setCid(cid);
+            cidByTagDTO.addTag("tag");
+            cidByTagDTO.setOpType(CommonEnum.CidByTagOpTypeEnum.AND);
+            audience.addCidByTag(cidByTagDTO);
+            audience.addCidByTag(cidByTagDTO);
+            audienceDTO.setAudience(audience);
+
+            System.out.println(pushApi.pushListCidByTag(audienceDTO));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -287,6 +325,16 @@ public class PushApiTest {
         Audience audience = new Audience();
         audience.addCid(cid);
         pushDTO.setAudience(audience);
+    }
+
+    private void fullCidByTag(PushDTO<Audience> pushDTO) {
+        Audience audience = new Audience();
+        pushDTO.setAudience(audience);
+        CidByTagDTO cidByTagDTO = new CidByTagDTO();
+        cidByTagDTO.setCid(cid);
+        cidByTagDTO.addTag("11");
+        cidByTagDTO.setOpType(CommonEnum.CidByTagOpTypeEnum.AND);
+        audience.addCidByTag(cidByTagDTO);
     }
 
     private void fullAlias(PushDTO<Audience> pushDTO) {

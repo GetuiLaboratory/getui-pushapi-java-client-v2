@@ -1,5 +1,7 @@
 package com.getui.push.v2.sdk.dto.req;
 
+import com.getui.push.v2.sdk.dto.CommonEnum;
+
 /**
  * 推送条件
  */
@@ -41,6 +43,16 @@ public class Settings {
      * 厂商智能配额策略-是否需要兜底（离线消息到期时通过厂商通道下发），false表示不需要，true表示需要
      */
     private Boolean needBackup;
+
+    /**
+     * 活跃行为的自定义天数，近${activate_filter_day}天活跃/非活跃用户
+     */
+    private Integer activateFilterDay;
+    /**
+     * @see CommonEnum.ActivateFilterTypeEnum
+     * 活跃行为的类型
+     */
+    private Integer activateFilterType;
 
     public Integer getTtl() {
         return ttl;
@@ -106,6 +118,22 @@ public class Settings {
         this.needBackup = needBackup;
     }
 
+    public Integer getActivateFilterDay() {
+        return activateFilterDay;
+    }
+
+    public void setActivateFilterDay(Integer activateFilterDay) {
+        this.activateFilterDay = activateFilterDay;
+    }
+
+    public Integer getActivateFilterType() {
+        return activateFilterType;
+    }
+
+    public void setActivateFilterType(CommonEnum.ActivateFilterTypeEnum activateFilterTypeEnum) {
+        this.activateFilterType = activateFilterTypeEnum.type;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -117,6 +145,8 @@ public class Settings {
                 ", filterNotifyOff=" + filterNotifyOff +
                 ", activeDays=" + activeDays +
                 ", needBackup=" + needBackup +
+                ", activateFilterDay=" + activateFilterDay +
+                ", activateFilterType=" + activateFilterType +
                 '}';
     }
 }

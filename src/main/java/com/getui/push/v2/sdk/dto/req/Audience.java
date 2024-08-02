@@ -13,12 +13,20 @@ public class Audience {
     private String fastCustomTag;
     private List<Condition> tag;
     private String all;
+    private List<CidByTagDTO> cidByTag;
 
     public void addCid(String cid) {
         if (this.cid == null) {
             this.cid = new ArrayList<String>();
         }
         this.cid.add(cid);
+    }
+
+    public void addCidByTag(CidByTagDTO cidByTag) {
+        if (this.cidByTag == null) {
+            this.cidByTag = new ArrayList<>();
+        }
+        this.cidByTag.add(cidByTag);
     }
 
     public void addAlias(String alias) {
@@ -83,6 +91,14 @@ public class Audience {
         this.all = all;
     }
 
+    public List<CidByTagDTO> getCidByTag() {
+        return cidByTag;
+    }
+
+    public void setCidByTag(List<CidByTagDTO> cidByTag) {
+        this.cidByTag = cidByTag;
+    }
+
     @Override
     public String toString() {
         return "Audience{" +
@@ -92,6 +108,7 @@ public class Audience {
                 ", fastCustomTag='" + fastCustomTag + '\'' +
                 ", tag=" + tag +
                 ", all='" + all + '\'' +
+                ", cidByTag=" + cidByTag +
                 '}';
     }
 }
