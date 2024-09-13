@@ -30,6 +30,12 @@ public class GTNotification {
 
     @SerializedName("channel_level")
     private String channelLevel;
+
+    /**
+     * 鸿蒙通知渠道类型
+     */
+    @SerializedName("slot_type")
+    private String slotType;
     /**
      * @see CommonEnum.ClickTypeEnum
      * 点击通知后续动作,
@@ -183,6 +189,14 @@ public class GTNotification {
         this.channelLevel = channelLevel;
     }
 
+    public String getSlotType() {
+        return slotType;
+    }
+
+    public void setSlotType(String slotType) {
+        this.slotType = slotType;
+    }
+
     public String getClickType() {
         return clickType;
     }
@@ -291,6 +305,7 @@ public class GTNotification {
                 ", channelId='" + channelId + '\'' +
                 ", channelName='" + channelName + '\'' +
                 ", channelLevel='" + channelLevel + '\'' +
+                ", slotType='" + slotType + '\'' +
                 ", clickType='" + clickType + '\'' +
                 ", intent='" + intent + '\'' +
                 ", want='" + want + '\'' +
