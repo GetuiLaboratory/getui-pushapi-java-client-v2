@@ -19,9 +19,10 @@ public class HarmonyNotification {
     /**
      * @see CommonEnum.HarmonyClickTypeEnum
      * 点击通知后续动作,
-     * 目前支持2种后续动作，
+     * 目前支持3种后续动作，
      * want：打开应用内特定页面，
      * startapp：打开应用首页
+     * payload：通知扩展消息
      */
     @SerializedName("click_type")
     private String clickType;
@@ -30,6 +31,11 @@ public class HarmonyNotification {
      * 示例：{"deviceId":"","bundleName":"com.getui.push","abilityName":"TestAbility","uri":"https://www.test.com:8080/push/test","action":"com.test.action","parameters":{"name":"Getui","age":12}}
      */
     private String want;
+    /**
+     * 鸿蒙平台通知扩展消息（消息分类category参数必填，且设置“EXPRESS”，发送通知扩展消息前请先申请开通对应的消息自分类权益）
+     * <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/push-noti-classification-0000001727885246#section0965171625420">自分类权益申请</a>
+     */
+    private String payload;
 
     public String getTitle() {
         return title;
@@ -71,14 +77,23 @@ public class HarmonyNotification {
         this.want = want;
     }
 
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
     @Override
     public String toString() {
         return "HarmonyNotification{" +
-                "title='" + title + '\'' +
+                "want='" + want + '\'' +
+                ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", category='" + category + '\'' +
                 ", clickType='" + clickType + '\'' +
-                ", want='" + want + '\'' +
+                ", payload='" + payload + '\'' +
                 '}';
     }
 }

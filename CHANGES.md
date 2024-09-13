@@ -1,5 +1,13 @@
 # Release Notes
 
+## 1.0.5.0
+
+### update
+
+* 鸿蒙厂商通道通知消息click_type新增支持payload
+* 鸿蒙个推通道通知消息支持设置通知渠道类型slotType
+* GtHttpClient支持设置maxConnTotal和maxConnPerRoute
+
 ## 1.0.4.0
 
 ### update

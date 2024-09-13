@@ -23,6 +23,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -80,6 +81,17 @@ public class GtHttpClient {
         builder.setDefaultRequestConfig(config)
                 .setConnectionTimeToLive(keepAliveSeconds, TimeUnit.SECONDS)
                 .useSystemProperties();
+
+        final String maxConnTotal = System.getProperty("http.client.maxConnTotal");
+        if (!StringUtils.isEmpty(maxConnTotal)) {
+            builder.setMaxConnTotal(Integer.parseInt(maxConnTotal));
+        }
+
+        final String maxConnPerRoute = System.getProperty("http.client.maxConnPerRoute");
+        if (!StringUtils.isEmpty(maxConnPerRoute)) {
+            builder.setMaxConnPerRoute(Integer.parseInt(maxConnPerRoute));
+        }
+
         this.httpclient = builder.build();
     }
 
