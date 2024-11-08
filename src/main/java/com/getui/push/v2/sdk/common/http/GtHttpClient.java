@@ -16,10 +16,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +55,8 @@ public class GtHttpClient {
         }
         this.maxHttpTryTime = maxHttpTryTime;
         final HttpClientBuilder builder = HttpClients.custom();
+        // 关闭CloseableHttpClient内默认的重试机制
+        builder.setRetryHandler(new DefaultHttpRequestRetryHandler(0, false));
         if (proxyConfig != null && Utils.isNotEmpty(proxyConfig.getHost())) {
             if (Utils.isNotEmpty(proxyConfig.getUsername())) {
                 CredentialsProvider credsProvider = new BasicCredentialsProvider();

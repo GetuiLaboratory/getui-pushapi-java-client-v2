@@ -32,10 +32,16 @@ public class HarmonyNotification {
      */
     private String want;
     /**
-     * 鸿蒙平台通知扩展消息（消息分类category参数必填，且设置“EXPRESS”，发送通知扩展消息前请先申请开通对应的消息自分类权益）
-     * <a href="https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/push-noti-classification-0000001727885246#section0965171625420">自分类权益申请</a>
+     * 鸿蒙平台通知扩展消息的额外数据，传递给应用的数据，应用根据数据自行处理相关逻辑
      */
     private String payload;
+
+    /**
+     * 消息覆盖使用，两条消息的notify_id相同，新的消息会覆盖老的消息
+     * 范围：[0, 2147483647]（如果要使用鸿蒙华为的消息撤回功能，此参数必填）
+     */
+    @SerializedName("notify_id")
+    private String notifyId;
 
     public String getTitle() {
         return title;
@@ -85,15 +91,24 @@ public class HarmonyNotification {
         this.payload = payload;
     }
 
+    public String getNotifyId() {
+        return notifyId;
+    }
+
+    public void setNotifyId(String notifyId) {
+        this.notifyId = notifyId;
+    }
+
     @Override
     public String toString() {
         return "HarmonyNotification{" +
-                "want='" + want + '\'' +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", category='" + category + '\'' +
                 ", clickType='" + clickType + '\'' +
+                ", want='" + want + '\'' +
                 ", payload='" + payload + '\'' +
+                ", notifyId='" + notifyId + '\'' +
                 '}';
     }
 }
