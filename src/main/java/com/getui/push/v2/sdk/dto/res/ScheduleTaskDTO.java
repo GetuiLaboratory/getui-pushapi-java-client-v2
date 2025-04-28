@@ -11,9 +11,9 @@ public class ScheduleTaskDTO {
      */
     private String createTime;
     /**
-     * 定时任务状态：success/failed
+     * 定时任务状态：send_success/do_not_send/send_failed/has_delete
      */
-    private String status;
+    private String sendResult;
     /**
      * 透传内容
      */
@@ -31,12 +31,12 @@ public class ScheduleTaskDTO {
         this.createTime = createTime;
     }
 
-    public String getStatus() {
-        return status;
+    public String getSendResult() {
+        return sendResult;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setSendResult(String sendResult) {
+        this.sendResult = sendResult;
     }
 
     public String getTransmissionContent() {
@@ -59,7 +59,7 @@ public class ScheduleTaskDTO {
     public String toString() {
         return "ScheduleTaskDTO{" +
                 "createTime='" + createTime + '\'' +
-                ", status='" + status + '\'' +
+                ", sendResult='" + sendResult + '\'' +
                 ", transmissionContent='" + transmissionContent + '\'' +
                 ", pushTime='" + pushTime + '\'' +
                 '}';

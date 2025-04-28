@@ -1,5 +1,13 @@
 # Release Notes
 
+## 1.0.7.0
+
+### update
+
+* 修改定时任务查询返回状态字段
+* strategy支持设置荣耀ho、鸿蒙华为hoshw
+* settings支持亮屏推送参数active_push、lst
+
 ## 1.0.6.0
 
 ### update
