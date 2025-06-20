@@ -13,6 +13,8 @@ public class Strategy extends HashMap<String, Integer> {
     public final static String st = "st";
     public final static String hx = "hx";
     public final static String hwq = "hwq";
+    public final static String ho = "ho";
+    public final static String hoshw = "hoshw";
 
     public Integer getDef() {
         return super.get(Strategy.def);
@@ -79,7 +81,7 @@ public class Strategy extends HashMap<String, Integer> {
     }
 
     public Integer getHx() {
-        return (Integer) super.get(Strategy.hx);
+        return super.get(Strategy.hx);
     }
 
     public void setHx(Integer hx) {
@@ -87,11 +89,27 @@ public class Strategy extends HashMap<String, Integer> {
     }
 
     public Integer getHwq() {
-        return (Integer) super.get(Strategy.hwq);
+        return super.get(Strategy.hwq);
     }
 
     public void setHwq(Integer hwq) {
         super.put(Strategy.hwq, hwq);
+    }
+
+    public Integer getHo() {
+        return super.get(Strategy.ho);
+    }
+
+    public void setHo(Integer ho) {
+        super.put(Strategy.ho, ho);
+    }
+
+    public Integer getHoshw() {
+        return super.get(Strategy.hoshw);
+    }
+
+    public void setHoshw(Integer hoshw) {
+        super.put(Strategy.hoshw, hoshw);
     }
 
 }

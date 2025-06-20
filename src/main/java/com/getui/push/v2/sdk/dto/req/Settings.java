@@ -48,11 +48,22 @@ public class Settings {
      * 活跃行为的自定义天数，近${activate_filter_day}天活跃/非活跃用户
      */
     private Integer activateFilterDay;
+
     /**
      * @see CommonEnum.ActivateFilterTypeEnum
      * 活跃行为的类型
      */
     private Integer activateFilterType;
+
+    /**
+     * 亮屏推送截止时间，单位毫秒，大于0且小于ttl
+     */
+    private Integer lst;
+
+    /**
+     * 是否亮屏推送，false表示不亮屏推送，true表示亮屏推送
+     */
+    private Boolean activePush;
 
     public Integer getTtl() {
         return ttl;
@@ -134,6 +145,22 @@ public class Settings {
         this.activateFilterType = activateFilterTypeEnum.type;
     }
 
+    public Integer getLst() {
+        return lst;
+    }
+
+    public void setLst(Integer lst) {
+        this.lst = lst;
+    }
+
+    public Boolean getActivePush() {
+        return activePush;
+    }
+
+    public void setActivePush(Boolean activePush) {
+        this.activePush = activePush;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -147,6 +174,8 @@ public class Settings {
                 ", needBackup=" + needBackup +
                 ", activateFilterDay=" + activateFilterDay +
                 ", activateFilterType=" + activateFilterType +
+                ", lst=" + lst +
+                ", activePush=" + activePush +
                 '}';
     }
 }
