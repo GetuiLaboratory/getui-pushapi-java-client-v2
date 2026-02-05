@@ -107,13 +107,22 @@ public interface PushApi {
     ApiResult<Map<String, Map<String, String>>> pushListByCid(@GtBodyParam AudienceDTO audienceDTO);
 
     /**
-     * 根据别名批量推送
+     * 根据别名批量推送(不需要返回别名详情)
      *
-     * @param audienceDTO
-     * @return
+     * @param audienceDTO 请求body参数
+     * @return 当need_alias_detail=false时，不返回别名详情时的响应结果
      */
     @GtPost(uri = pushListAliasUri)
     ApiResult<Map<String, Map<String, String>>> pushListByAlias(@GtBodyParam AudienceDTO audienceDTO);
+
+    /**
+     * 根据别名批量推送(需要返回别名详情)
+     *
+     * @param audienceDTO 请求body参数
+     * @return 当请求参数is_async=false，need_alias_detail=true时，返回别名详情时的响应结果
+     */
+    @GtPost(uri = pushListAliasUri)
+    ApiResult<Map<String, Map<String, Map<String, String>>>> pushListByAliasNeedAliasDetail(@GtBodyParam AudienceDTO audienceDTO);
 
     /**
      * 执行群推
