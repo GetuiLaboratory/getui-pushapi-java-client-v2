@@ -1,5 +1,13 @@
 # Release Notes
 
+## 1.0.8.0
+
+### update
+
+* 统计API(StatisticApi) Query参数完善
+* 执行别名批量推API(/push/list/alias) 新增适配需要返回别名详情响应体的方法
+* 新增active_push_platform参数控制需要启用亮屏推送的平台
+
 ## 1.0.7.0
 
 ### update

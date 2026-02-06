@@ -2,6 +2,8 @@ package com.getui.push.v2.sdk.dto.req;
 
 import com.getui.push.v2.sdk.dto.CommonEnum;
 
+import java.util.Set;
+
 /**
  * 推送条件
  */
@@ -64,6 +66,20 @@ public class Settings {
      * 是否亮屏推送，false表示不亮屏推送，true表示亮屏推送
      */
     private Boolean activePush;
+
+    /**
+     * 需要启用亮屏推送的平台列表
+     * <p>
+     * 启用亮屏推送才需要设置，未设置默认为[1,3]
+     * <p>
+     * 支持的平台：
+     * <ul>
+     *   <li>1：android平台</li>
+     *   <li>2：ios平台</li>
+     *   <li>3：harmony平台</li>
+     * </ul>
+     */
+    private Set<Integer> activePushPlatform;
 
     public Integer getTtl() {
         return ttl;
@@ -161,6 +177,14 @@ public class Settings {
         this.activePush = activePush;
     }
 
+    public Set<Integer> getActivePushPlatform() {
+        return activePushPlatform;
+    }
+
+    public void setActivePushPlatform(Set<Integer> activePushPlatform) {
+        this.activePushPlatform = activePushPlatform;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
@@ -176,6 +200,7 @@ public class Settings {
                 ", activateFilterType=" + activateFilterType +
                 ", lst=" + lst +
                 ", activePush=" + activePush +
+                ", activePushPlatform=" + activePushPlatform +
                 '}';
     }
 }
