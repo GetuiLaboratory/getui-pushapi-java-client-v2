@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.0.10.0
+
+### update
+
+* 用户API新增支持批量绑定或解绑cid和deviceToken
+* push_channel离线厂商通道消息内容支持miniProgram通道
+
 ## 1.0.9.0
 
 ### update

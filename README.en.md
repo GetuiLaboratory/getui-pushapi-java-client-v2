@@ -32,7 +32,7 @@ It is recommended to manage dependencies via Maven. Simply declare the following
 <dependency>
     <groupId>com.getui.push</groupId>
     <artifactId>restful-sdk</artifactId>
-   <version>1.0.9.0</version>
+   <version>1.0.10.0</version>
 </dependency>
 ```
 

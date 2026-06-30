@@ -10,6 +10,7 @@ import com.getui.push.v2.sdk.anno.param.GtQueryParam;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.req.*;
 import com.getui.push.v2.sdk.dto.res.AliasResDTO;
+import com.getui.push.v2.sdk.dto.res.BindDeviceTokenResDTO;
 import com.getui.push.v2.sdk.dto.res.CidStatusDTO;
 import com.getui.push.v2.sdk.dto.res.QueryCidResDTO;
 
@@ -183,5 +184,17 @@ public interface UserApi {
      */
     @GtPost(uri = "/user/count/")
     ApiResult<Map<String, Integer>> queryUser(@GtBodyParam ConditionListDTO conditionListDTO);
+
+    /**
+     * 批量绑定或解绑cid和deviceToken。
+     * deviceToken有值时绑定，为空时解绑；单次最多提交1000条数据。
+     *
+     * @param type                  通道类型，微信小程序使用wx；其他厂商通道需开通权限
+     * @param cidDeviceTokenListDTO cid与deviceToken关系列表
+     * @return 操作失败的用户列表；全部成功时data为空
+     */
+    @GtPost(uri = "/user/bind_dt/")
+    ApiResult<BindDeviceTokenResDTO> bindOrUnbindDeviceToken(@GtPathParam String type,
+                                                             @GtBodyParam CidDeviceTokenListDTO cidDeviceTokenListDTO);
 
 }
