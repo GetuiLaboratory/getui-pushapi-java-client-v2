@@ -9,10 +9,7 @@ import com.getui.push.v2.sdk.anno.param.GtPathParam;
 import com.getui.push.v2.sdk.anno.param.GtQueryParam;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.req.*;
-import com.getui.push.v2.sdk.dto.res.AliasResDTO;
-import com.getui.push.v2.sdk.dto.res.BindDeviceTokenResDTO;
-import com.getui.push.v2.sdk.dto.res.CidStatusDTO;
-import com.getui.push.v2.sdk.dto.res.QueryCidResDTO;
+import com.getui.push.v2.sdk.dto.res.*;
 
 import java.util.List;
 import java.util.Map;
@@ -196,5 +193,66 @@ public interface UserApi {
     @GtPost(uri = "/user/bind_dt/")
     ApiResult<BindDeviceTokenResDTO> bindOrUnbindDeviceToken(@GtPathParam String type,
                                                              @GtBodyParam CidDeviceTokenListDTO cidDeviceTokenListDTO);
+
+    /**
+     * 【用户】查询用户基础信息
+     *
+     * @param cidSet cid集合
+     * @return 有效cid的基础信息和无效cid集合
+     */
+    @GtGet(uri = "/user/info/base/")
+    ApiResult<UserInfoResDTO> queryUserBaseInfo(@GtPathParam Set<String> cidSet);
+
+    /**
+     * 【用户】查询用户高级信息
+     *
+     * @param cidSet cid集合
+     * @return 有效cid的高级信息和无效cid集合
+     */
+    @GtGet(uri = "/user/info/advanced/")
+    ApiResult<UserInfoResDTO> queryUserAdvancedInfo(@GtPathParam Set<String> cidSet);
+
+    /**
+     * 【测试设备】新增测试CID
+     *
+     * @param testCidAddDTO 测试cid列表
+     * @return 添加成功和失败的cid列表
+     */
+    @GtPost(uri = "/user/test/cid/add")
+    ApiResult<TestCidAddResDTO> addTestCid(@GtBodyParam TestCidAddDTO testCidAddDTO);
+
+    /**
+     * 【测试设备】修改测试CID
+     *
+     * @param testCidUpdateDTO cid和新备注
+     * @return 修改结果
+     */
+    @GtPost(uri = "/user/test/cid/update")
+    ApiResult<Void> updateTestCid(@GtBodyParam TestCidUpdateDTO testCidUpdateDTO);
+
+    /**
+     * 【测试设备】删除测试CID
+     *
+     * @param testCidDeleteDTO 待删除的cid列表
+     * @return 删除结果
+     */
+    @GtPost(uri = "/user/test/cid/delete")
+    ApiResult<Void> deleteTestCid(@GtBodyParam TestCidDeleteDTO testCidDeleteDTO);
+
+    /**
+     * 【测试设备】查询测试CID列表
+     * 所有查询参数均可为null，pageNum和pageSize为null时服务端默认为1和10。
+     *
+     * @param cid      cid精确查询条件
+     * @param remark   备注，模糊查询；空字符串或纯空白不参与筛选
+     * @param pageNum  页码；小于 1 时按 1 处理
+     * @param pageSize 每页数量；小于 1 时按 10 处理
+     * @return 测试cid列表和分页信息
+     */
+    @GtGet(uri = "/user/test/cid/list")
+    ApiResult<TestCidListResDTO> queryTestCidList(@GtQueryParam(name = "cid", required = false) String cid,
+                                                  @GtQueryParam(name = "remark", required = false) String remark,
+                                                  @GtQueryParam(name = "pageNum", required = false) Integer pageNum,
+                                                  @GtQueryParam(name = "pageSize", required = false) Integer pageSize);
 
 }
