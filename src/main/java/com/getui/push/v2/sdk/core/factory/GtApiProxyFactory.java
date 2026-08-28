@@ -105,7 +105,8 @@ public class GtApiProxyFactory {
                 if (annotation instanceof GtPathParam) {
                     apiParam.handlePathParam(args[i]);
                 } else if (annotation instanceof GtQueryParam) {
-                    apiParam.handleQueryParam(args[i], ((GtQueryParam) annotation).name());
+                    GtQueryParam queryParam = (GtQueryParam) annotation;
+                    apiParam.handleQueryParam(args[i], queryParam.name(), queryParam.required());
                 } else if (annotation instanceof GtBodyParam) {
                     apiParam.setBody(args[i]);
                 }
@@ -164,7 +165,15 @@ public class GtApiProxyFactory {
         }
 
         public void handleQueryParam(Object arg, String name) {
-            Assert.notNull(arg, "query参数");
+            handleQueryParam(arg, name, true);
+        }
+
+        public void handleQueryParam(Object arg, String name, boolean required) {
+            if (required) {
+                Assert.notNull(arg, "query参数");
+            } else if (arg == null) {
+                return;
+            }
             final String param = handleArg(arg);
             addQueryParams(name, param);
         }

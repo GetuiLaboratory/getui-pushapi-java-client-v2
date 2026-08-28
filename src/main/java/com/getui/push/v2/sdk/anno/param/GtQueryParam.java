@@ -20,4 +20,11 @@ public @interface GtQueryParam {
      * @return
      */
     String name();
+
+    /**
+     * 是否为必填参数。
+     *
+     * @return true表示参数不能为null
+     */
+    boolean required() default true;
 }

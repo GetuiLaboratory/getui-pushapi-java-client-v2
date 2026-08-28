@@ -7,8 +7,7 @@ import com.getui.push.v2.sdk.api.util.Utils;
 import com.getui.push.v2.sdk.common.ApiResult;
 import com.getui.push.v2.sdk.dto.CommonEnum;
 import com.getui.push.v2.sdk.dto.req.*;
-import com.getui.push.v2.sdk.dto.res.AliasResDTO;
-import com.getui.push.v2.sdk.dto.res.QueryCidResDTO;
+import com.getui.push.v2.sdk.dto.res.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -156,6 +155,45 @@ public class UserApiTest {
     public void queryUserTags() {
         System.out.println(userApi.toString());
         ApiResult<Map<String, List<String>>> apiResult = userApi.queryUserTags(cid);
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void queryUserBaseInfo() {
+        ApiResult<UserInfoResDTO> apiResult = userApi.queryUserBaseInfo(Utils.newHashSet(cid, "xx"));
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void queryUserAdvancedInfo() {
+        ApiResult<UserInfoResDTO> apiResult = userApi.queryUserAdvancedInfo(Utils.newHashSet(cid, "xx"));
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void addTestCid() {
+        TestCidAddDTO dto = new TestCidAddDTO().add(cid, "java sdk test cid");
+        ApiResult<TestCidAddResDTO> apiResult = userApi.addTestCid(dto);
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void updateTestCid() {
+        TestCidUpdateDTO dto = new TestCidUpdateDTO(cid, "java sdk updated test cid");
+        ApiResult<Void> apiResult = userApi.updateTestCid(dto);
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void deleteTestCid() {
+        TestCidDeleteDTO dto = new TestCidDeleteDTO().addCid(cid);
+        ApiResult<Void> apiResult = userApi.deleteTestCid(dto);
+        System.out.println(apiResult);
+    }
+
+    @Test
+    public void queryTestCidList() {
+        ApiResult<TestCidListResDTO> apiResult = userApi.queryTestCidList(null, null, 1, 10);
         System.out.println(apiResult);
     }
 }
